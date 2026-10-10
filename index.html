@@ -3,584 +3,165 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07110d">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08120c">
 <title>FINOVA — Your Money, Made Clearer</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
-:root{
-  --bg:#07110d;--panel:#101c16;--panel2:#15231b;--line:#26382c;
-  --mint:#baff70;--mint2:#d7ffa9;--text:#f5f8f2;--muted:#92a398;
-  --red:#ff8b8b;--yellow:#f7d67c;--shadow:0 22px 65px #0005;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;min-height:100vh;overflow-x:hidden}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--mint);outline-offset:3px}
-button:active{transform:scale(.97)}
-::selection{background:var(--mint);color:#07110d}
-::-webkit-scrollbar{width:7px}
-::-webkit-scrollbar-thumb{background:#344638;border-radius:10px}
-.bg-glow{position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 75% 0%,#baff7010,transparent 35%),radial-gradient(ellipse at 0% 70%,#41b98a0a,transparent 40%)}
-.app{display:none;min-height:100vh}
-.layout{display:grid;grid-template-columns:246px minmax(0,1fr);min-height:100vh}
-.sidebar{height:100vh;position:sticky;top:0;padding:27px 18px;border-right:1px solid var(--line);display:flex;flex-direction:column;background:#08120de8;backdrop-filter:blur(20px);z-index:20}
-.brand{display:flex;align-items:center;gap:11px;padding:0 9px 30px}
-.brand-mark{height:39px;width:39px;border-radius:14px;background:var(--mint);display:grid;place-items:center;color:#07110d;font-size:22px;font-weight:900;box-shadow:0 0 30px #baff7020}
-.brand-name{font:700 22px "Space Grotesk";letter-spacing:-1px}
-.brand-sub{font-size:9px;letter-spacing:2px;color:var(--muted);margin-top:3px}
-.nav-label{font-size:10px;color:#708177;letter-spacing:1.8px;font-weight:800;padding:13px 12px 9px}
-.nav{display:flex;flex-direction:column;gap:5px}
-.nav button{border:0;background:transparent;color:var(--muted);display:flex;align-items:center;gap:13px;padding:12px 13px;border-radius:12px;text-align:left;font-size:13px;font-weight:600;transition:.25s}
-.nav button:hover{background:#ffffff08;color:var(--text);transform:translateX(2px)}
-.nav button.active{background:#baff7014;color:var(--mint);box-shadow:inset 3px 0 var(--mint)}
-.nav-icon{width:21px;text-align:center;font-size:17px}
-.sidebar-bottom{margin-top:auto}
-.upgrade{background:linear-gradient(145deg,#1d3022,#101b14);border:1px solid #354c37;border-radius:17px;padding:17px;margin:15px 0}
-.upgrade .orb{height:35px;width:35px;border-radius:12px;background:var(--mint);color:#07110d;display:grid;place-items:center;font-size:19px}
-.upgrade h4{margin:14px 0 6px;font-size:13px}
-.upgrade p{font-size:11px;line-height:1.6;color:var(--muted);margin:0 0 13px}
-.small-button{border:1px solid #415a43;background:#baff7010;color:var(--mint);border-radius:9px;padding:9px 12px;font-size:11px;font-weight:700}
-.profile{display:flex;align-items:center;gap:10px;padding:16px 6px 0;border-top:1px solid var(--line)}
-.avatar{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:#263d2d;color:var(--mint);font-weight:800}
-.profile-name{font-size:12px;font-weight:700}
-.profile-sub{font-size:10px;color:var(--muted);margin-top:3px}
-main{padding:28px clamp(17px,3.1vw,48px) 70px;min-width:0;max-width:1600px;width:100%;margin:0 auto}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:31px}
-.eyebrow{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--mint);font-weight:800}
-h1,h2,h3,p{margin-top:0}
-h1{font:600 clamp(25px,3vw,35px) "Space Grotesk";letter-spacing:-1.5px;margin:8px 0}
-.subtitle{color:var(--muted);font-size:13px}
-.top-actions{display:flex;gap:10px;align-items:center}
-.icon-btn{height:41px;width:41px;border-radius:13px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:16px;transition:.25s}
-.icon-btn:hover{border-color:#789c73;transform:translateY(-2px)}
-.primary{background:var(--mint);color:#08110b;border:0;border-radius:11px;padding:12px 16px;font-size:12px;font-weight:800;transition:.25s;box-shadow:0 5px 20px #baff7010}
-.primary:hover{background:#d4ff9e;transform:translateY(-2px);box-shadow:0 8px 25px #baff7020}
-.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:11px;padding:11px 14px;font-size:12px;font-weight:700}
-.danger{background:#ff737314;border:1px solid #ff737333;color:var(--red);border-radius:9px;padding:8px 11px;font-size:11px}
-.page{display:none;animation:pageIn .35s ease both}
-.page.active{display:block}
-@keyframes pageIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
-@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1deg)}}
-@keyframes shine{0%{transform:translateX(-160%) rotate(25deg)}100%{transform:translateX(180%) rotate(25deg)}}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 #baff7000}50%{box-shadow:0 0 0 8px #baff700d}}
-@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(8px,-7px)}}
-@keyframes spin{to{transform:rotate(360deg)}}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}
-.stat{padding:20px;background:linear-gradient(145deg,#14221a,#0e1912);border:1px solid var(--line);border-radius:18px;position:relative;overflow:hidden;transition:.3s}
-.stat:hover{transform:translateY(-4px);border-color:#5b7951}
-.stat:after{content:"";position:absolute;right:-30px;top:-40px;width:100px;height:100px;border-radius:50%;background:#baff7008;filter:blur(4px)}
-.stat-top{display:flex;align-items:center;justify-content:space-between;gap:6px;color:var(--muted);font-size:11px}
-.stat-icon{height:31px;width:31px;border-radius:10px;background:#baff7012;display:grid;place-items:center;color:var(--mint);font-size:15px}
-.stat-value{font:600 clamp(20px,2.1vw,29px) "Space Grotesk";margin:20px 0 9px;letter-spacing:-1px;overflow-wrap:anywhere}
-.stat-foot{font-size:10px;color:var(--muted)}
-.positive{color:var(--mint)}.negative{color:var(--red)}
-.dashboard-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(270px,.85fr);gap:18px;margin-bottom:18px}
-.panel{background:linear-gradient(145deg,#111e16,#0d1711);border:1px solid var(--line);border-radius:20px;padding:22px;min-width:0;transition:border-color .25s}
-.panel:hover{border-color:#364d38}
-.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:19px}
-.panel-head h3{font:600 15px "Space Grotesk";margin:0}
-.muted{color:var(--muted);font-size:11px}
-.link-btn{background:transparent;border:0;color:var(--mint);font-size:11px;font-weight:700}
-.balance-card{position:relative;overflow:hidden;min-height:220px;border:1px solid #baff7030;border-radius:21px;padding:23px;background:linear-gradient(125deg,#baff70,#88d95b 54%,#3b9660);color:#0b1a0e;box-shadow:0 18px 45px #a8f36c13;transform-style:preserve-3d;transition:transform .2s}
-.balance-card:before{content:"";position:absolute;top:-60%;left:-40%;width:40%;height:220%;background:#ffffff50;filter:blur(13px);transform:rotate(25deg);animation:shine 7s ease-in-out infinite}
-.balance-card:after{content:"";position:absolute;width:210px;height:210px;border:1px solid #173c2733;border-radius:50%;right:-60px;top:-80px;box-shadow:0 0 0 23px #173c2710,0 0 0 48px #173c2709}
-.card-content{position:relative;z-index:1}
-.card-top{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:800;letter-spacing:.5px}
-.chip{height:27px;width:35px;border-radius:7px;border:1px solid #173c2766;background:linear-gradient(135deg,#f0ffd6,#80b85c);position:relative}
-.chip:after{content:"";position:absolute;left:50%;top:0;height:100%;width:1px;background:#173c2766}
-.card-label{font-size:11px;font-weight:700;margin-top:24px;opacity:.7}
-.card-balance{font:700 clamp(27px,3.2vw,40px) "Space Grotesk";letter-spacing:-1.5px;margin:5px 0 21px}
-.card-bottom{display:flex;justify-content:space-between;align-items:end;font-size:11px;font-weight:700}
-.card-name{font-size:12px;margin-top:5px}
-.card-network{font:800 21px "Space Grotesk";font-style:italic;letter-spacing:-2px}
-.card-actions{display:flex;gap:9px;margin-top:13px}
-.card-actions button{flex:1}
-.chart{width:100%;height:160px;overflow:visible}
-.chart-grid{stroke:#2a3a2e;stroke-dasharray:4 5}
-.chart-label{fill:#809286;font-size:10px}
-.legend{display:flex;gap:17px;margin-top:10px;font-size:10px;color:var(--muted)}
-.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px}
-.budget-item{margin:17px 0}
-.budget-row{display:flex;justify-content:space-between;gap:8px;font-size:11px;margin-bottom:9px}
-.progress{height:6px;border-radius:99px;background:#25352a;overflow:hidden}
-.progress span{display:block;height:100%;background:var(--mint);border-radius:99px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
-.goal-card{padding:17px;border:1px solid #314334;border-radius:15px;background:linear-gradient(135deg,#17281b,#101a13);margin-top:15px}
-.goal-top{display:flex;align-items:center;justify-content:space-between}
-.goal-icon{height:37px;width:37px;border-radius:12px;background:#baff7017;display:grid;place-items:center;font-size:19px}
-.goal-name{font-size:12px;font-weight:700;margin:13px 0 5px}
-.goal-amount{font:600 19px "Space Grotesk";margin-bottom:12px}
-.table-wrap{overflow-x:auto}
-table{border-collapse:collapse;width:100%;min-width:450px}
-th{text-align:left;color:var(--muted);font-size:10px;letter-spacing:.5px;text-transform:uppercase;font-weight:700;padding:12px 9px;border-bottom:1px solid var(--line)}
-td{padding:14px 9px;border-bottom:1px solid #26362b80;font-size:11px}
-tr:last-child td{border-bottom:0}
-.item-name{display:flex;align-items:center;gap:10px;font-weight:700}
-.item-icon{height:34px;width:34px;flex-shrink:0;display:grid;place-items:center;background:#baff7010;border-radius:11px;font-size:16px}
-.item-sub{color:var(--muted);font-size:10px;margin-top:4px}
-.badge{display:inline-block;border-radius:30px;padding:5px 8px;font-size:9px;font-weight:800;background:#baff7012;color:var(--mint)}
-.badge.red{background:#ff8b8b12;color:var(--red)}
-.badge.yellow{background:#f7d67c12;color:var(--yellow)}
-.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:17px}
-.field{width:100%;background:#0a140e;border:1px solid #2a3b2d;border-radius:10px;color:var(--text);padding:12px 13px;font-size:12px;outline:none}
-.field:focus{border-color:#8cbe70}
-.field::placeholder{color:#6e8073}
-.toolbar .field{width:auto;flex:1;min-width:160px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.form-field{display:flex;flex-direction:column;gap:7px}
-.form-field label{font-size:11px;color:var(--muted)}
-.form-field.full{grid-column:1/-1}
-.modal-backdrop{display:none;position:fixed;inset:0;background:#000a;backdrop-filter:blur(9px);z-index:100;align-items:center;justify-content:center;padding:16px}
-.modal-backdrop.show{display:flex;animation:pageIn .2s ease}
-.modal{width:min(100%,480px);max-height:90vh;overflow:auto;border:1px solid #3a4d3c;background:#101c14;border-radius:22px;padding:25px;box-shadow:var(--shadow)}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.modal-head h3{font:600 20px "Space Grotesk";margin:0}
-.close{background:#223126;border:0;color:var(--text);height:32px;width:32px;border-radius:10px}
-.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}
-.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:12px}
-.empty-icon{font-size:29px;margin-bottom:12px}
-.toast{position:fixed;right:22px;bottom:25px;z-index:200;background:#d3ffa5;color:#07110d;padding:13px 17px;border-radius:13px;font-size:12px;font-weight:800;box-shadow:var(--shadow);opacity:0;transform:translateY(15px);transition:.3s;pointer-events:none}
-.toast.show{opacity:1;transform:translateY(0)}
-.coach-box{border:1px solid #405c3f;background:radial-gradient(ellipse at top right,#baff7016,transparent 50%),#111e15;border-radius:20px;padding:24px}
-.coach-orb{width:52px;height:52px;border-radius:17px;background:var(--mint);display:grid;place-items:center;color:#07110d;font-size:25px;animation:pulse 3s infinite}
-.coach-answer{white-space:pre-wrap;line-height:1.8;color:#c6d5c9;font-size:13px;margin-top:17px}
-.setting-row{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:16px 0;border-bottom:1px solid var(--line)}
-.setting-row:last-child{border:0}
-.setting-title{font-size:12px;font-weight:700}.setting-desc{font-size:10px;color:var(--muted);margin-top:5px}
-.toggle{width:44px;height:25px;border-radius:30px;border:0;background:#344538;padding:3px;display:flex}
-.toggle span{height:19px;width:19px;background:white;border-radius:50%;transition:.2s}
-.toggle.on{background:var(--mint);justify-content:flex-end}
-.welcome{position:fixed;inset:0;z-index:500;background:#07110d;display:flex;align-items:center;justify-content:center;padding:22px;overflow:hidden}
-.welcome:before,.welcome:after{content:"";position:absolute;border:1px solid #baff7018;border-radius:50%;width:480px;height:480px;animation:drift 10s ease-in-out infinite}
-.welcome:after{width:700px;height:700px;animation-delay:-4s}
-.welcome-box{position:relative;z-index:2;width:min(100%,410px);text-align:center}
-.welcome-logo{height:65px;width:65px;border-radius:22px;background:var(--mint);color:#07110d;display:grid;place-items:center;font:800 34px "Space Grotesk";margin:0 auto 24px;box-shadow:0 0 70px #baff7028}
-.welcome h1{font:700 clamp(34px,8vw,48px) "Space Grotesk";letter-spacing:-2.5px;margin:0 0 12px}
-.welcome h1 span{color:var(--mint)}
-.welcome p{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:27px}
-.welcome .field{text-align:center;font-size:14px;padding:15px;margin-bottom:12px}
-.welcome .primary{width:100%;padding:15px;font-size:13px}
-.welcome-note{font-size:10px;color:#687b6c;margin-top:19px}
-.mobile-nav{display:none}
-.light-mode{--bg:#eff5ec;--panel:#fff;--panel2:#f2f7ef;--line:#d9e4d6;--text:#14251a;--muted:#647667;--shadow:0 22px 65px #23452b12}
-.light-mode .sidebar{background:#f8fcf6eF}
-.light-mode .stat,.light-mode .panel{background:linear-gradient(145deg,#fff,#f7fbf4)}
-.light-mode .field{background:#f8fcf6;color:#14251a;border-color:#d9e4d6}
-.light-mode .coach-box,.light-mode .goal-card{background:#f7fbf4}
-.light-mode .modal{background:#f8fcf6}
-.light-mode .card-balance{color:#0b1a0e}
-.light-mode .chart-grid{stroke:#d8e2d5}
-.light-mode td{border-color:#e4ece1}
-.light-mode .progress{background:#e1eadf}
-.light-mode .welcome{background:#07110d}
-@media(min-width:1500px){main{padding-left:55px;padding-right:55px}}
-@media(max-width:1050px){.layout{grid-template-columns:205px minmax(0,1fr)}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-grid{grid-template-columns:1fr}.sidebar{padding:22px 12px}}
-@media(max-width:680px){
- .layout{display:block}.sidebar{display:none}main{padding:21px 15px 95px}.topbar{margin-bottom:23px;align-items:flex-start}
- .top-actions .primary{padding:10px 11px;font-size:10px}.top-actions{gap:6px}
- .stats{gap:10px}.stat{padding:15px;border-radius:15px}.stat-value{font-size:23px;margin:15px 0 8px}
- .panel{padding:17px;border-radius:17px}.dashboard-grid{gap:13px}.balance-card{min-height:210px;padding:20px}
- .mobile-nav{position:fixed;z-index:40;bottom:0;left:0;right:0;display:flex;justify-content:space-around;gap:3px;padding:9px 5px calc(9px + env(safe-area-inset-bottom));background:#0b1711ed;backdrop-filter:blur(22px);border-top:1px solid var(--line)}
- .mobile-nav button{border:0;background:transparent;color:var(--muted);font-size:9px;display:flex;flex-direction:column;align-items:center;gap:5px;padding:5px;min-width:48px}
- .mobile-nav button span{font-size:18px}.mobile-nav button.active{color:var(--mint)}
- .form-grid{grid-template-columns:1fr}.form-field.full{grid-column:auto}.toolbar .field{min-width:100%}
- .topbar h1{font-size:27px}.top-actions .icon-btn{height:37px;width:37px}
- .card-actions button{font-size:10px;padding:10px 7px}
-}
+:root{--bg:#08120c;--panel:#111e15;--panel2:#17261b;--line:#293b2d;--text:#f3f8f1;--muted:#94a698;--mint:#baff70;--red:#ff8e8e;--yellow:#f4d479;--shadow:0 20px 60px #0005}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;min-height:100vh;overflow-x:hidden}button,input,select{font:inherit}button{cursor:pointer;transition:transform .2s,border-color .2s,background .2s}button:active{transform:scale(.97)}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--mint);outline-offset:2px}.glow{position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 75% 0%,#baff7010,transparent 38%),radial-gradient(ellipse at 0% 80%,#48bd850b,transparent 40%)}
+.app{display:none}.layout{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:100vh}.sidebar{height:100vh;position:sticky;top:0;padding:24px 15px;border-right:1px solid var(--line);display:flex;flex-direction:column;background:#08120ced;backdrop-filter:blur(20px);z-index:20}.brand{display:flex;align-items:center;gap:10px;padding:0 8px 26px}.brand-icon{width:39px;height:39px;border-radius:14px;background:var(--mint);color:#08120c;display:grid;place-items:center;font:800 24px "Space Grotesk";box-shadow:0 0 30px #baff7020}.brand-name{font:700 22px "Space Grotesk";letter-spacing:-1px}.brand-sub{font-size:9px;color:var(--muted);letter-spacing:1.5px;margin-top:3px}.nav-label{font-size:10px;color:#708276;letter-spacing:1.7px;font-weight:800;padding:13px 12px 8px}.nav{display:grid;gap:4px}.nav button{border:0;background:transparent;color:var(--muted);padding:12px;border-radius:12px;text-align:left;font-size:12px;font-weight:700;display:flex;gap:12px;align-items:center}.nav button:hover{background:#ffffff08;color:var(--text)}.nav button.active{background:#baff7014;color:var(--mint);box-shadow:inset 3px 0 var(--mint)}.ni{width:20px;text-align:center;font-size:17px}.sidebar-bottom{margin-top:auto}.side-note{padding:16px;border:1px solid #334a34;border-radius:16px;background:linear-gradient(145deg,#1b2d1d,#111b14);margin:14px 0}.side-note strong{font-size:12px}.side-note p{font-size:10px;color:var(--muted);line-height:1.7;margin:8px 0 13px}.profile{border-top:1px solid var(--line);padding:14px 5px 0;display:flex;align-items:center;gap:10px}.avatar{height:34px;width:34px;border-radius:50%;background:#29402c;color:var(--mint);display:grid;place-items:center;font-weight:800}.profile-name{font-size:12px;font-weight:700}.profile-sub{font-size:10px;color:var(--muted);margin-top:3px}
+main{padding:27px clamp(15px,3vw,45px) 75px;max-width:1600px;width:100%;margin:auto;min-width:0}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:28px}.eyebrow{font-size:10px;letter-spacing:1.7px;color:var(--mint);font-weight:800;text-transform:uppercase}.topbar h1{font:600 clamp(25px,3vw,35px) "Space Grotesk";letter-spacing:-1.3px;margin:8px 0}.muted{font-size:11px;color:var(--muted)}.actions{display:flex;gap:8px;align-items:center}.icon-btn{width:39px;height:39px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text)}.primary{background:var(--mint);color:#08120c;border:0;border-radius:11px;padding:12px 15px;font-size:12px;font-weight:800}.primary:hover{background:#d6ffa9;transform:translateY(-2px)}.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:11px;font-weight:700}.danger{background:#ff8e8e12;color:var(--red);border:1px solid #ff8e8e30;border-radius:9px;padding:7px 9px;font-size:10px}.link{background:transparent;border:0;color:var(--mint);font-size:11px;font-weight:700}
+.page{display:none}.page.active{display:block;animation:enter .3s ease}@keyframes enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}@keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-6px) rotate(1deg)}}@keyframes shine{0%{transform:translateX(-180%) rotate(25deg)}100%{transform:translateX(380%) rotate(25deg)}}@keyframes pulse{50%{box-shadow:0 0 0 8px #baff700c}}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-bottom:17px}.stat{background:linear-gradient(145deg,#15231a,#101a13);border:1px solid var(--line);border-radius:17px;padding:18px;min-width:0;transition:.25s}.stat:hover{transform:translateY(-3px);border-color:#57744c}.stat-label{display:flex;justify-content:space-between;align-items:center;gap:5px;color:var(--muted);font-size:11px}.stat-icon{width:29px;height:29px;border-radius:10px;background:#baff7013;color:var(--mint);display:grid;place-items:center}.stat-value{font:600 clamp(19px,2vw,27px) "Space Grotesk";letter-spacing:-.8px;margin:18px 0 8px;overflow-wrap:anywhere}.positive{color:var(--mint)}.negative{color:var(--red)}
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.85fr);gap:16px;margin-bottom:17px}.panel{background:linear-gradient(145deg,#121f16,#0f1912);border:1px solid var(--line);border-radius:19px;padding:21px;min-width:0}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}.panel-head h3{font:600 15px "Space Grotesk";margin:0}.panel-head .muted{margin-top:5px}.balance-card{position:relative;overflow:hidden;min-height:218px;padding:23px;border-radius:21px;color:#0a1a0d;background:linear-gradient(125deg,#c5ff84,#8fd95e 56%,#45a96b);border:1px solid #d9ffb4;box-shadow:0 18px 48px #a8f36c13;transform-style:preserve-3d;transition:transform .16s}.balance-card:before{content:"";position:absolute;top:-60%;left:-50%;height:220%;width:35%;background:#ffffff60;filter:blur(12px);transform:rotate(25deg);animation:shine 7s ease-in-out infinite}.balance-card:after{content:"";position:absolute;width:190px;height:190px;border:1px solid #173c2733;border-radius:50%;right:-40px;top:-80px;box-shadow:0 0 0 25px #173c2710,0 0 0 50px #173c2708}.card-content{position:relative;z-index:1}.card-top,.card-bottom{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:800}.chip{width:35px;height:27px;border-radius:7px;background:linear-gradient(135deg,#f3ffd7,#8cb65e);border:1px solid #34582a55}.card-label{font-size:10px;font-weight:700;opacity:.7;margin-top:23px}.card-balance{font:700 clamp(28px,3.2vw,39px) "Space Grotesk";letter-spacing:-1.5px;margin:6px 0 23px}.card-name{font-size:12px;margin-top:5px}.card-network{font:800 21px "Space Grotesk";font-style:italic;letter-spacing:-2px}.card-actions{display:flex;gap:8px;margin-top:12px}.card-actions button{flex:1}.chart{width:100%;height:170px;overflow:visible}.chart-grid{stroke:#2a3b2d;stroke-dasharray:4 5}.chart-label{fill:#94a698;font-size:10px}.legend{display:flex;gap:16px;font-size:10px;color:var(--muted)}.dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:6px}
+.budget-item{margin:16px 0}.budget-row{display:flex;justify-content:space-between;gap:8px;font-size:11px;margin-bottom:8px}.progress{height:6px;background:#29392c;border-radius:99px;overflow:hidden}.progress span{display:block;height:100%;border-radius:99px;background:var(--mint);transition:width .5s}.goal-card{border:1px solid #334632;background:linear-gradient(135deg,#17271a,#111b14);border-radius:15px;padding:16px;margin:12px 0}.goal-title{font-size:12px;font-weight:800;margin:12px 0 5px}.goal-amount{font:600 20px "Space Grotesk";margin:7px 0 12px}.badge{display:inline-block;border-radius:30px;padding:5px 8px;font-size:9px;font-weight:800;background:#baff7012;color:var(--mint)}.badge.yellow{color:var(--yellow);background:#f4d47912}.badge.red{color:var(--red);background:#ff8e8e12}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:460px}th{text-align:left;padding:11px 8px;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--line)}td{padding:13px 8px;border-bottom:1px solid #26382b80;font-size:11px}tr:last-child td{border-bottom:0}.item-name{display:flex;align-items:center;gap:9px;font-weight:700}.item-icon{width:34px;height:34px;flex-shrink:0;border-radius:11px;background:#baff7010;display:grid;place-items:center;font-size:16px}.item-sub{font-size:10px;color:var(--muted);margin-top:4px}.empty{text-align:center;padding:30px 10px;color:var(--muted);font-size:12px;line-height:1.7}
+.toolbar{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:16px}.field{width:100%;background:#0a150e;border:1px solid #2a3b2d;color:var(--text);border-radius:10px;padding:12px;font-size:12px;min-width:0}.field::placeholder{color:#708274}.field:focus{border-color:#8cbe70;outline:none}.toolbar .field{flex:1;min-width:150px;width:auto}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form-field{display:flex;flex-direction:column;gap:7px;min-width:0}.form-field label{font-size:11px;color:var(--muted)}.form-field.full{grid-column:1/-1}
+.modal-backdrop{position:fixed;inset:0;background:#000b;backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center;padding:15px}.modal-backdrop.show{display:flex}.modal{width:min(100%,490px);max-height:90dvh;overflow:auto;border:1px solid #3a4d3c;background:#111e15;border-radius:21px;padding:22px;box-shadow:var(--shadow)}.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:19px}.modal-head h3{font:600 20px "Space Grotesk";margin:0}.close{width:32px;height:32px;border:0;border-radius:10px;background:#263629;color:var(--text)}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}.toast{position:fixed;bottom:25px;right:20px;z-index:200;background:var(--mint);color:#08120c;padding:13px 17px;border-radius:12px;font-size:12px;font-weight:800;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none;max-width:calc(100vw - 30px)}.toast.show{opacity:1;transform:none}
+.welcome{position:fixed;inset:0;z-index:500;background:#08120c;display:flex;align-items:center;justify-content:center;padding:22px;overflow:hidden}.welcome:before,.welcome:after{content:"";position:absolute;border:1px solid #baff7018;width:450px;height:450px;border-radius:50%;animation:float 10s infinite}.welcome:after{width:700px;height:700px;animation-delay:-4s}.welcome-box{position:relative;z-index:1;width:min(100%,410px);text-align:center}.welcome-logo{width:64px;height:64px;border-radius:21px;background:var(--mint);color:#08120c;display:grid;place-items:center;font:800 34px "Space Grotesk";margin:0 auto 23px;box-shadow:0 0 60px #baff7028}.welcome h1{font:700 clamp(34px,8vw,48px) "Space Grotesk";letter-spacing:-2px;margin:10px 0}.welcome h1 span{color:var(--mint)}.welcome p{font-size:13px;color:var(--muted);line-height:1.8;margin:14px 0 25px}.welcome .field{text-align:center;padding:15px;margin-bottom:12px}.welcome .primary{width:100%;padding:15px}.welcome-note{font-size:10px;color:#708274;margin-top:17px;letter-spacing:1px}
+.mobile-nav{display:none}.light{--bg:#eff5ec;--panel:#fff;--panel2:#f3f8f0;--line:#d8e3d5;--text:#17271b;--muted:#687a6a;--shadow:0 20px 60px #23452b12}.light .sidebar{background:#f8fcf6ed}.light .stat,.light .panel{background:linear-gradient(145deg,#fff,#f8fbf5)}.light .field{background:#fff;color:#17271b;border-color:#d8e3d5}.light .goal-card,.light .side-note{background:#f5faf1}.light .modal{background:#f7fbf4}.light .progress{background:#dfe9dc}.light td{border-color:#e2ebe0}.light .chart-grid{stroke:#d8e3d5}.light .welcome{background:#08120c}
+@media(max-width:1050px){.layout{grid-template-columns:195px minmax(0,1fr)}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}.sidebar{padding:20px 10px}}
+@media(max-width:680px){.layout{display:block}.sidebar{display:none}main{padding:20px 13px calc(100px + env(safe-area-inset-bottom))}.topbar{align-items:flex-start;margin-bottom:22px}.topbar h1{font-size:26px}.actions{gap:5px}.actions .primary{font-size:10px;padding:11px}.icon-btn{width:36px;height:36px}.stats{gap:9px}.stat{padding:13px;border-radius:14px}.stat-value{font-size:clamp(19px,5.3vw,24px);margin:14px 0 7px}.stat-label{font-size:10px}.panel{padding:16px;border-radius:16px}.grid{gap:12px}.balance-card{padding:19px;min-height:205px}.card-balance{font-size:30px}.card-actions{gap:6px}.card-actions button{padding:10px 5px;font-size:10px}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:50;justify-content:space-around;padding:8px 3px calc(8px + env(safe-area-inset-bottom));background:#0b1711ed;backdrop-filter:blur(20px);border-top:1px solid var(--line)}.mobile-nav button{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;flex:1;background:transparent;border:0;color:var(--muted);font-size:9px;padding:4px 0}.mobile-nav button span{font-size:18px}.mobile-nav button.active{color:var(--mint)}.form-grid{grid-template-columns:1fr}.form-field.full{grid-column:auto}.toolbar .field{min-width:100%}.modal{padding:18px}.panel-head h3{font-size:14px}.side-note{display:none}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
-<div class="bg-glow"></div>
+<div class="glow"></div>
+<div class="welcome" id="welcome"><div class="welcome-box"><div class="welcome-logo">F</div><div class="eyebrow">YOUR PERSONAL FINANCE SPACE</div><h1>Money, meet<br><span>clarity.</span></h1><p>Understand your money. Track your progress. Build better financial habits.</p><form id="welcomeForm"><input class="field" id="welcomeName" placeholder="What should we call you?" maxlength="40" required autocomplete="given-name"><button class="primary">Enter FINOVA ↗</button></form><div class="welcome-note">YOUR MONEY. MADE CLEARER.</div></div></div>
 
-<div class="welcome" id="welcome">
-  <div class="welcome-box">
-    <div class="welcome-logo">F</div>
-    <div class="eyebrow">YOUR PERSONAL FINANCE SPACE</div>
-    <h1>Money, meet<br><span>clarity.</span></h1>
-    <p>A smarter way to understand your money, build better habits, and move closer to your goals.</p>
-    <form id="welcomeForm">
-      <input id="welcomeName" class="field" placeholder="What should we call you?" maxlength="40" autocomplete="given-name" required>
-      <button class="primary" type="submit">Enter FINOVA ↗</button>
-    </form>
-    <div class="welcome-note">YOUR MONEY. MADE CLEARER.</div>
-  </div>
-</div>
-
-<div class="app" id="app">
-<div class="layout">
-<aside class="sidebar">
-  <div class="brand"><div class="brand-mark">F</div><div><div class="brand-name">FINOVA</div><div class="brand-sub">MONEY, MADE CLEARER</div></div></div>
-  <div class="nav-label">WORKSPACE</div>
-  <nav class="nav">
-    <button class="active" data-page="dashboard"><span class="nav-icon">◫</span>Overview</button>
-    <button data-page="transactions"><span class="nav-icon">⇄</span>Transactions</button>
-    <button data-page="budgets"><span class="nav-icon">◷</span>Budgets</button>
-    <button data-page="goals"><span class="nav-icon">◎</span>Savings goals</button>
-    <button data-page="loans"><span class="nav-icon">↗</span>Loans & EMI</button>
-    <button data-page="cards"><span class="nav-icon">▤</span>Cards & bills</button>
-    <button data-page="coach"><span class="nav-icon">✳</span>Money Coach</button>
-  </nav>
-  <div class="sidebar-bottom">
-    <div class="upgrade"><div class="orb">✦</div><h4>Your next money milestone</h4><p>Small, consistent steps can build powerful financial habits.</p><button class="small-button" onclick="navigate('goals')">Explore goals ↗</button></div>
-    <div class="profile"><div class="avatar" id="sideAvatar">F</div><div style="min-width:0"><div class="profile-name" id="sideName">Welcome</div><div class="profile-sub">Personal account</div></div></div>
-  </div>
-</aside>
+<div class="app" id="app"><div class="layout">
+<aside class="sidebar"><div class="brand"><div class="brand-icon">F</div><div><div class="brand-name">FINOVA</div><div class="brand-sub">MONEY, MADE CLEARER</div></div></div><div class="nav-label">YOUR WORKSPACE</div><nav class="nav">
+<button class="active" data-page="dashboard"><span class="ni">◫</span>Overview</button>
+<button data-page="transactions"><span class="ni">⇄</span>Transactions</button>
+<button data-page="budgets"><span class="ni">◷</span>Budgets</button>
+<button data-page="goals"><span class="ni">◎</span>Savings goals</button>
+<button data-page="loans"><span class="ni">↗</span>Loans & EMI</button>
+<button data-page="investments"><span class="ni">▥</span>Investments</button>
+<button data-page="recurring"><span class="ni">⟳</span>Recurring expenses</button>
+<button data-page="bills"><span class="ni">▤</span>Bills & reminders</button>
+<button data-page="reports"><span class="ni">▧</span>Reports</button>
+<button data-page="settings"><span class="ni">⚙</span>Settings & backup</button>
+</nav><div class="sidebar-bottom"><div class="side-note"><strong>✦ Your money, your goals</strong><p>Consistency matters more than perfection. Keep tracking, one day at a time.</p><button class="secondary" onclick="go('goals')">View goals ↗</button></div><div class="profile"><div class="avatar" id="avatar">F</div><div><div class="profile-name" id="sideName">Welcome</div><div class="profile-sub">Personal workspace</div></div></div></div></aside>
 
 <main>
-<header class="topbar">
-  <div><div class="eyebrow" id="dateLabel">YOUR FINANCIAL SPACE</div><h1 id="greeting">Good to see you.</h1><div class="subtitle" id="greetingSub">Here’s your financial picture today.</div></div>
-  <div class="top-actions"><button class="icon-btn" title="Switch appearance" onclick="toggleTheme()">◐</button><button class="icon-btn" title="Settings" onclick="navigate('settings')">⚙</button><button class="primary" onclick="openTransaction()">＋ Add new</button></div>
-</header>
+<header class="topbar"><div><div class="eyebrow" id="dateLabel">YOUR FINANCIAL SPACE</div><h1 id="greeting">Your money, at a glance.</h1><div class="muted">Make every rupee count.</div></div><div class="actions"><button class="icon-btn" onclick="toggleTheme()" title="Switch theme">◐</button><button class="icon-btn" onclick="go('settings')" title="Settings">⚙</button><button class="primary" onclick="openTx()">＋ Add new</button></div></header>
 
 <section class="page active" id="page-dashboard">
-  <div class="stats">
-    <div class="stat"><div class="stat-top">Total balance <span class="stat-icon">₹</span></div><div class="stat-value" id="totalBalance">₹0</div><div class="stat-foot">Income minus expenses</div></div>
-    <div class="stat"><div class="stat-top">Income this month <span class="stat-icon">↗</span></div><div class="stat-value positive" id="totalIncome">₹0</div><div class="stat-foot">Money coming in</div></div>
-    <div class="stat"><div class="stat-top">Expenses this month <span class="stat-icon">↘</span></div><div class="stat-value" id="totalExpense">₹0</div><div class="stat-foot">Money going out</div></div>
-    <div class="stat"><div class="stat-top">Savings rate <span class="stat-icon">◎</span></div><div class="stat-value" id="savingsRate">0%</div><div class="stat-foot">Of this month’s income</div></div>
-  </div>
-
-  <div class="dashboard-grid">
-    <div>
-      <div class="balance-card" id="bankCard">
-        <div class="card-content">
-          <div class="card-top"><span>FINOVA · EVERYDAY</span><div class="chip"></div></div>
-          <div class="card-label">YOUR AVAILABLE BALANCE</div>
-          <div class="card-balance" id="heroBalance">₹0.00</div>
-          <div class="card-bottom"><div><div style="opacity:.65;font-size:9px">CARDHOLDER</div><div class="card-name" id="cardholder">FINOVA MEMBER</div></div><div class="card-network">finova<span style="font-size:10px;vertical-align:top">●</span></div></div>
-        </div>
-      </div>
-      <div class="card-actions"><button class="secondary" onclick="openTransaction('income')">＋ Add income</button><button class="secondary" onclick="openTransaction('expense')">↗ Add expense</button><button class="secondary" onclick="exportCSV()">⇩ Export</button></div>
-      <div class="panel" style="margin-top:18px">
-        <div class="panel-head"><div><h3>Cash flow</h3><div class="muted" style="margin-top:5px">Your six-month money movement</div></div><span class="badge">6 MONTHS</span></div>
-        <svg id="cashChart" class="chart" viewBox="0 0 600 180" preserveAspectRatio="none" aria-label="Income and expense chart"></svg>
-        <div class="legend"><span><i class="dot" style="background:var(--mint)"></i>Income</span><span><i class="dot" style="background:#7391a0"></i>Expenses</span></div>
-      </div>
-    </div>
-    <div>
-      <div class="panel">
-        <div class="panel-head"><div><h3>Budget overview</h3><div class="muted" style="margin-top:5px">Keep your spending in check</div></div><button class="link-btn" onclick="navigate('budgets')">View all ↗</button></div>
-        <div id="budgetPreview"></div>
-        <button class="secondary" style="width:100%;margin-top:7px" onclick="openBudget()">＋ Create a budget</button>
-      </div>
-      <div class="panel" style="margin-top:17px">
-        <div class="panel-head"><div><h3>Savings focus</h3><div class="muted" style="margin-top:5px">One step closer to your goal</div></div><button class="link-btn" onclick="navigate('goals')">All goals ↗</button></div>
-        <div id="goalPreview"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel" style="margin-bottom:18px">
-    <div class="panel-head"><div><h3>Recent transactions</h3><div class="muted" style="margin-top:5px">Know where every rupee goes</div></div><button class="link-btn" onclick="navigate('transactions')">View activity ↗</button></div>
-    <div class="table-wrap"><table><thead><tr><th>Transaction</th><th>Category</th><th>Date</th><th>Amount</th></tr></thead><tbody id="recentRows"></tbody></table></div>
-  </div>
-  <div class="panel">
-    <div class="panel-head"><div><h3>Upcoming payments</h3><div class="muted" style="margin-top:5px">Keep an eye on what’s due</div></div><button class="link-btn" onclick="navigate('cards')">Manage bills ↗</button></div>
-    <div id="upcomingPreview"></div>
-  </div>
-</section>
-
-<section class="page" id="page-transactions">
-  <div class="panel">
-    <div class="panel-head"><div><h3>Transactions</h3><div class="muted" style="margin-top:5px">Every rupee, accounted for.</div></div><button class="primary" onclick="openTransaction()">＋ Add transaction</button></div>
-    <div class="toolbar"><input class="field" id="transactionSearch" placeholder="Search transactions…" oninput="renderTransactions()"><select class="field" id="transactionFilter" onchange="renderTransactions()"><option value="all">All transactions</option><option value="income">Income</option><option value="expense">Expenses</option></select></div>
-    <div class="table-wrap"><table><thead><tr><th>Transaction</th><th>Category</th><th>Date</th><th>Amount</th><th>Actions</th></tr></thead><tbody id="transactionRows"></tbody></table></div>
-  </div>
-</section>
-
-<section class="page" id="page-budgets">
-  <div class="panel"><div class="panel-head"><div><h3>Your budgets</h3><div class="muted" style="margin-top:5px">Give every category a plan.</div></div><button class="primary" onclick="openBudget()">＋ New budget</button></div><div id="budgetsList"></div></div>
-</section>
-
-<section class="page" id="page-goals">
-  <div class="panel"><div class="panel-head"><div><h3>Savings goals</h3><div class="muted" style="margin-top:5px">Turn your plans into progress.</div></div><button class="primary" onclick="openGoal()">＋ New goal</button></div><div id="goalsList"></div></div>
-</section>
-
-<section class="page" id="page-loans">
-  <div class="stats">
-    <div class="stat"><div class="stat-top">Outstanding principal <span class="stat-icon">↗</span></div><div class="stat-value" id="loanOutstanding">₹0</div><div class="stat-foot">Across recorded loans</div></div>
-    <div class="stat"><div class="stat-top">Estimated monthly EMI <span class="stat-icon">₹</span></div><div class="stat-value" id="loanEmi">₹0</div><div class="stat-foot">Based on entered loan details</div></div>
-  </div>
-  <div class="panel"><div class="panel-head"><div><h3>Loans & EMI planner</h3><div class="muted" style="margin-top:5px">Track your repayments and outstanding debt.</div></div><button class="primary" onclick="openLoan()">＋ Add loan</button></div><div id="loansList"></div></div>
-  <div class="panel" style="margin-top:18px"><h3>EMI calculator</h3><div class="muted" style="margin:7px 0 18px">Estimate your monthly payment before borrowing.</div><div class="form-grid"><div class="form-field"><label>Loan amount (₹)</label><input class="field" id="calcPrincipal" type="number" min="0" value="500000" oninput="calculateEMI()"></div><div class="form-field"><label>Annual interest (%)</label><input class="field" id="calcRate" type="number" min="0" step=".1" value="10" oninput="calculateEMI()"></div><div class="form-field"><label>Tenure (years)</label><input class="field" id="calcYears" type="number" min=".1" step=".1" value="5" oninput="calculateEMI()"></div></div><div class="goal-card"><div class="muted">ESTIMATED MONTHLY EMI</div><div class="goal-amount" id="calcResult">₹10,624</div><div class="muted" id="calcTotal"></div></div></div>
-</section>
-
-<section class="page" id="page-cards">
-  <div class="panel"><div class="panel-head"><div><h3>Cards & bills</h3><div class="muted" style="margin-top:5px">Keep due dates from sneaking up on you.</div></div><button class="primary" onclick="openBill()">＋ Add bill</button></div><div id="billsList"></div></div>
-</section>
-
-<section class="page" id="page-coach">
-  <div class="coach-box"><div class="coach-orb">✳</div><div class="eyebrow" style="margin-top:22px">FINOVA MONEY COACH</div><h2 style="font:600 27px 'Space Grotesk';margin:10px 0">A clearer view of your money.</h2><p class="muted" style="line-height:1.8">Get insights based on the financial information you enter. Your coach works locally in this demo—no live AI service is connected.</p><div class="toolbar" style="margin-top:22px"><input id="coachQuestion" class="field" placeholder="Ask: How can I improve my savings?"><button class="primary" onclick="askCoach()">Ask FINOVA ↗</button></div><div id="coachAnswer" class="coach-answer">Your personalized financial insights will appear here.</div></div>
-  <div class="panel" style="margin-top:18px"><h3>Quick questions</h3><div class="toolbar" style="margin-top:15px"><button class="secondary" onclick="quickAsk('How can I improve my savings?')">How do I save more?</button><button class="secondary" onclick="quickAsk('Where am I spending the most?')">Where am I spending most?</button><button class="secondary" onclick="quickAsk('Help me reduce my debt.')">How can I reduce debt?</button></div></div>
-</section>
-
-<section class="page" id="page-settings">
-  <div class="panel"><h3>Settings & data</h3><div class="muted" style="margin:7px 0 18px">Your personal finance workspace.</div>
-    <div class="setting-row"><div><div class="setting-title">Appearance</div><div class="setting-desc">Switch between dark and light themes.</div></div><button class="secondary" onclick="toggleTheme()">Switch theme ◐</button></div>
-    <div class="setting-row"><div><div class="setting-title">Change your display name</div><div class="setting-desc">Update the name shown in FINOVA.</div></div><button class="secondary" onclick="changeName()">Edit name</button></div>
-    <div class="setting-row"><div><div class="setting-title">Backup your data</div><div class="setting-desc">Download your transactions, budgets, goals, and other records as JSON.</div></div><button class="primary" onclick="backupData()">Download backup</button></div>
-    <div class="setting-row"><div><div class="setting-title">Restore a backup</div><div class="setting-desc">Import a FINOVA JSON backup into this browser.</div></div><button class="secondary" onclick="document.getElementById('restoreFile').click()">Choose file</button><input id="restoreFile" type="file" accept=".json,application/json" hidden onchange="restoreData(event)"></div>
-    <div class="setting-row"><div><div class="setting-title">Export transactions</div><div class="setting-desc">Download transaction history as a CSV spreadsheet.</div></div><button class="secondary" onclick="exportCSV()">Export CSV</button></div>
-    <div class="setting-row"><div><div class="setting-title">Clear local data</div><div class="setting-desc">Permanently delete this browser's FINOVA data.</div></div><button class="danger" onclick="clearData()">Clear data</button></div>
-    <p class="muted" style="line-height:1.8;margin-top:20px">FINOVA stores demo data in this browser using local storage. This standalone file does not connect to your bank, synchronize across devices, or process real payments. Keep backups somewhere secure.</p>
-  </div>
-</section>
-</main>
+<div class="stats">
+<div class="stat"><div class="stat-label">Net worth <span class="stat-icon">◈</span></div><div class="stat-value" id="netWorth">₹0</div><div class="muted">Assets minus liabilities</div></div>
+<div class="stat"><div class="stat-label">Income this month <span class="stat-icon">↗</span></div><div class="stat-value positive" id="income">₹0</div><div class="muted">Recorded income</div></div>
+<div class="stat"><div class="stat-label">Expenses this month <span class="stat-icon">↘</span></div><div class="stat-value negative" id="expense">₹0</div><div class="muted">Recorded spending</div></div>
+<div class="stat"><div class="stat-label">Savings rate <span class="stat-icon">◎</span></div><div class="stat-value" id="rate">0%</div><div class="muted">Monthly income retained</div></div>
 </div>
+<div class="grid"><div>
+<div class="balance-card" id="bankCard"><div class="card-content"><div class="card-top"><span>FINOVA · EVERYDAY</span><div class="chip"></div></div><div class="card-label">TOTAL RECORDED BALANCE</div><div class="card-balance" id="heroBalance">₹0</div><div class="card-bottom"><div><div style="font-size:9px;opacity:.7">ACCOUNT HOLDER</div><div class="card-name" id="cardholder">FINOVA MEMBER</div></div><div class="card-network">finova<span style="font-size:10px">●</span></div></div></div></div>
+<div class="card-actions"><button class="secondary" onclick="openTx('income')">＋ Income</button><button class="secondary" onclick="openTx('expense')">↗ Expense</button><button class="secondary" onclick="exportCSV()">⇩ Export</button></div>
+<div class="panel" style="margin-top:16px"><div class="panel-head"><div><h3>Cash flow</h3><div class="muted">Income vs expenses · last 6 months</div></div><span class="badge">6 MONTHS</span></div><svg id="chart" class="chart" viewBox="0 0 600 180" preserveAspectRatio="none"></svg><div class="legend"><span><i class="dot" style="background:var(--mint)"></i>Income</span><span><i class="dot" style="background:#7391a0"></i>Expenses</span></div></div>
+</div><div>
+<div class="panel"><div class="panel-head"><div><h3>Budget health</h3><div class="muted">Monthly spending limits</div></div><button class="link" onclick="go('budgets')">View all ↗</button></div><div id="budgetPreview"></div><button class="secondary" style="width:100%;margin-top:7px" onclick="openBudget()">＋ New budget</button></div>
+<div class="panel" style="margin-top:15px"><div class="panel-head"><div><h3>Savings focus</h3><div class="muted">Keep moving towards your goals</div></div><button class="link" onclick="go('goals')">View all ↗</button></div><div id="goalPreview"></div></div>
+<div class="panel" style="margin-top:15px"><div class="panel-head"><div><h3>Financial snapshot</h3><span class="stat-icon">✳</span></div></div><div id="insights" class="muted" style="line-height:1.9"></div></div>
+</div></div>
+<div class="panel" style="margin-bottom:16px"><div class="panel-head"><div><h3>Recent transactions</h3><div class="muted">Your latest money movements</div></div><button class="link" onclick="go('transactions')">All activity ↗</button></div><div class="table-wrap"><table><thead><tr><th>Transaction</th><th>Category</th><th>Date</th><th>Amount</th></tr></thead><tbody id="recent"></tbody></table></div></div>
+<div class="panel"><div class="panel-head"><div><h3>Coming up</h3><div class="muted">Unpaid bills and recurring expenses</div></div><button class="link" onclick="go('bills')">Manage ↗</button></div><div id="upcoming"></div></div>
+</section>
 
-<nav class="mobile-nav">
-  <button class="active" data-page="dashboard"><span>◫</span>Home</button>
-  <button data-page="transactions"><span>⇄</span>Activity</button>
-  <button data-page="budgets"><span>◷</span>Budgets</button>
-  <button data-page="goals"><span>◎</span>Goals</button>
-  <button data-page="settings"><span>⚙</span>More</button>
-</nav>
-</div>
+<section class="page" id="page-transactions"><div class="panel"><div class="panel-head"><div><h3>Transactions</h3><div class="muted">Record and review your income and expenses.</div></div><button class="primary" onclick="openTx()">＋ Add transaction</button></div><div class="toolbar"><input id="searchTx" class="field" placeholder="Search name or category…" oninput="renderTx()"><select id="filterTx" class="field" onchange="renderTx()"><option value="all">All types</option><option value="income">Income</option><option value="expense">Expenses</option></select><input id="monthTx" class="field" type="month" onchange="renderTx()"></div><div class="table-wrap"><table><thead><tr><th>Transaction</th><th>Category</th><th>Date</th><th>Amount</th><th>Actions</th></tr></thead><tbody id="txRows"></tbody></table></div></div></section>
 
-<div class="modal-backdrop" id="modalBackdrop" onclick="if(event.target===this)closeModal()">
- <div class="modal"><div class="modal-head"><h3 id="modalTitle">Add item</h3><button class="close" onclick="closeModal()">✕</button></div><div id="modalBody"></div><div class="modal-actions"><button class="secondary" onclick="closeModal()">Cancel</button><button class="primary" id="modalSave">Save changes</button></div></div>
-</div>
-<div class="toast" id="toast"></div>
+<section class="page" id="page-budgets"><div class="panel"><div class="panel-head"><div><h3>Your budgets</h3><div class="muted">Give each category a spending limit.</div></div><button class="primary" onclick="openBudget()">＋ New budget</button></div><div id="budgetList"></div></div></section>
+
+<section class="page" id="page-goals"><div class="panel"><div class="panel-head"><div><h3>Savings goals</h3><div class="muted">Plan, contribute, and track progress.</div></div><button class="primary" onclick="openGoal()">＋ New goal</button></div><div id="goalList"></div></div></section>
+
+<section class="page" id="page-loans"><div class="stats"><div class="stat"><div class="stat-label">Outstanding debt <span class="stat-icon">↗</span></div><div class="stat-value" id="debtTotal">₹0</div><div class="muted">Recorded remaining principal</div></div><div class="stat"><div class="stat-label">Monthly EMI <span class="stat-icon">₹</span></div><div class="stat-value" id="emiTotal">₹0</div><div class="muted">Estimated for recorded loans</div></div></div><div class="panel"><div class="panel-head"><div><h3>Loans & EMI</h3><div class="muted">Track debt and principal repayments.</div></div><button class="primary" onclick="openLoan()">＋ Add loan</button></div><div id="loanList"></div></div><div class="panel" style="margin-top:16px"><h3>EMI calculator</h3><div class="muted" style="margin:7px 0 17px">Estimate your monthly loan payment.</div><div class="form-grid"><div class="form-field"><label>Principal (₹)</label><input id="cp" class="field" type="number" value="500000" min="0" oninput="calcEMI()"></div><div class="form-field"><label>Annual interest (%)</label><input id="cr" class="field" type="number" value="10" min="0" step=".1" oninput="calcEMI()"></div><div class="form-field"><label>Tenure (years)</label><input id="cy" class="field" type="number" value="5" min=".1" step=".1" oninput="calcEMI()"></div></div><div class="goal-card"><div class="muted">ESTIMATED EMI</div><div class="goal-amount" id="calcResult">₹0</div><div class="muted" id="calcDetail"></div></div></div></section>
+
+<section class="page" id="page-investments"><div class="stats"><div class="stat"><div class="stat-label">Portfolio value <span class="stat-icon">▥</span></div><div class="stat-value" id="portfolioValue">₹0</div><div class="muted">Entered current values</div></div><div class="stat"><div class="stat-label">Invested amount <span class="stat-icon">₹</span></div><div class="stat-value" id="investedValue">₹0</div><div class="muted">Entered cost basis</div></div><div class="stat"><div class="stat-label">Unrealized P/L <span class="stat-icon">↗</span></div><div class="stat-value" id="profitValue">₹0</div><div class="muted">Current value minus cost</div></div></div><div class="panel"><div class="panel-head"><div><h3>Investment tracker</h3><div class="muted">Record holdings you want to monitor.</div></div><button class="primary" onclick="openInvestment()">＋ Add investment</button></div><div id="investmentList"></div><p class="muted" style="line-height:1.8;margin-top:15px">Prices are manually entered; this tracker does not fetch live market prices or place trades.</p></div></section>
+
+<section class="page" id="page-recurring"><div class="panel"><div class="panel-head"><div><h3>Recurring expenses</h3><div class="muted">Track subscriptions, rent, SIP contributions, and regular payments.</div></div><button class="primary" onclick="openRecurring()">＋ Add recurring item</button></div><div id="recurringList"></div><div class="goal-card"><div class="muted">TOTAL MONTHLY COMMITMENTS</div><div class="goal-amount" id="recurringTotal">₹0</div><div class="muted">Based on the frequency you record.</div></div></div></section>
+
+<section class="page" id="page-bills"><div class="panel"><div class="panel-head"><div><h3>Bills & reminders</h3><div class="muted">Track due dates and mark payments as paid.</div></div><button class="primary" onclick="openBill()">＋ Add bill</button></div><div id="billList"></div><p class="muted" style="line-height:1.8;margin-top:15px">Reminders are shown inside this app. Background push notifications require additional setup.</p></div></section>
+
+<section class="page" id="page-reports"><div class="panel"><div class="panel-head"><div><h3>Financial reports</h3><div class="muted">Summaries based on the transactions you have entered.</div></div><button class="secondary" onclick="exportCSV()">⇩ Export CSV</button></div><div class="stats"><div class="stat"><div class="stat-label">All-time income</div><div class="stat-value positive" id="allIncome">₹0</div></div><div class="stat"><div class="stat-label">All-time expenses</div><div class="stat-value negative" id="allExpense">₹0</div></div><div class="stat"><div class="stat-label">Net cash flow</div><div class="stat-value" id="allFlow">₹0</div></div><div class="stat"><div class="stat-label">Transactions</div><div class="stat-value" id="txCount">0</div></div></div><div class="panel-head"><h3>Spending by category</h3></div><div id="categoryReport"></div></div></section>
+
+<section class="page" id="page-settings"><div class="panel"><h3>Settings & backup</h3><div class="muted" style="margin:7px 0 18px">Manage your personal workspace and data.</div>
+<div class="setting-row"><div><b>Display name</b><div class="muted" style="margin-top:5px">Change your welcome name.</div></div><button class="secondary" onclick="changeName()">Edit name</button></div>
+<div class="setting-row"><div><b>Appearance</b><div class="muted" style="margin-top:5px">Switch between dark and light themes.</div></div><button class="secondary" onclick="toggleTheme()">Switch theme ◐</button></div>
+<div class="setting-row"><div><b>Download full backup</b><div class="muted" style="margin-top:5px">Save all recorded data as a JSON file.</div></div><button class="primary" onclick="backup()">Download</button></div>
+<div class="setting-row"><div><b>Restore backup</b><div class="muted" style="margin-top:5px">Import a previous FINOVA backup.</div></div><button class="secondary" onclick="$('restoreFile').click()">Choose file</button><input type="file" id="restoreFile" hidden accept=".json,application/json" onchange="restore(event)"></div>
+<div class="setting-row"><div><b>Export transactions</b><div class="muted" style="margin-top:5px">Download a spreadsheet-compatible CSV.</div></div><button class="secondary" onclick="exportCSV()">Export CSV</button></div>
+<div class="setting-row"><div><b>Clear all data</b><div class="muted" style="margin-top:5px">Permanently erase this browser's FINOVA records.</div></div><button class="danger" onclick="clearAll()">Clear data</button></div>
+<p class="muted" style="line-height:1.9;margin-top:20px">Privacy note: this standalone version stores records in this browser. It does not connect to your bank or sync to other devices. Export a backup regularly and protect the file.</p></div></section>
+</main></div>
+
+<nav class="mobile-nav"><button class="active" data-page="dashboard"><span>◫</span>Home</button><button data-page="transactions"><span>⇄</span>Activity</button><button data-page="budgets"><span>◷</span>Budgets</button><button data-page="goals"><span>◎</span>Goals</button><button data-page="more"><span>☰</span>More</button></nav></div>
+
+<div class="modal-backdrop" id="backdrop" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-head"><h3 id="modalTitle">Add item</h3><button class="close" onclick="closeModal()">✕</button></div><div id="modalBody"></div><div class="modal-actions"><button class="secondary" onclick="closeModal()">Cancel</button><button class="primary" id="saveBtn">Save</button></div></div></div><div class="toast" id="toast"></div>
 
 <script>
-const $=id=>document.getElementById(id);
-const today=()=>new Date().toISOString().slice(0,10);
-const uid=()=>Math.random().toString(36).slice(2,10);
+const $=id=>document.getElementById(id),uid=()=>Math.random().toString(36).slice(2,10),today=()=>new Date().toISOString().slice(0,10),month=()=>today().slice(0,7);
 const money=n=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number(n)||0);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const defaultData=()=>({
- name:'',theme:'dark',transactions:[],budgets:[],goals:[],loans:[],bills:[]
-});
-let data=defaultData(),modalSaveHandler=null,toastTimer;
-function loadData(){
- try{const d=JSON.parse(localStorage.getItem('finovaPremiumData')||'null');if(d)data={...defaultData(),...d};}catch(e){}
-}
-function saveData(){localStorage.setItem('finovaPremiumData',JSON.stringify(data));}
-function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2600);}
-function startApp(){
- $('welcome').style.display='none';$('app').style.display='block';
- $('sideName').textContent=data.name;$('sideAvatar').textContent=(data.name||'F')[0].toUpperCase();
- $('cardholder').textContent=(data.name||'FINOVA MEMBER').toUpperCase();
- $('greeting').textContent=`Good to see you, ${data.name.split(' ')[0]}.`;
- const now=new Date();$('dateLabel').textContent=now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();
- document.body.classList.toggle('light-mode',data.theme==='light');
- renderAll();
-}
-$('welcomeForm').addEventListener('submit',e=>{e.preventDefault();const n=$('welcomeName').value.trim();if(!n)return;data.name=n;saveData();startApp();});
-function navigate(page){
- document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- const target=$('page-'+page);if(!target)return;
- target.classList.add('active');
- document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
- window.scrollTo({top:0,behavior:'smooth'});
- if(page==='settings'){}
-}
-document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>navigate(b.dataset.page)));
-function toggleTheme(){data.theme=data.theme==='light'?'dark':'light';document.body.classList.toggle('light-mode',data.theme==='light');saveData();toast('Appearance updated');}
-function changeName(){const n=prompt('What should FINOVA call you?',data.name);if(n&&n.trim()){data.name=n.trim().slice(0,40);saveData();startApp();toast('Name updated');}}
-function openModal(title,html,handler){
- $('modalTitle').textContent=title;$('modalBody').innerHTML=html;
- modalSaveHandler=handler;$('modalBackdrop').classList.add('show');
-}
-function closeModal(){$('modalBackdrop').classList.remove('show');modalSaveHandler=null;}
-$('modalSave').addEventListener('click',()=>{if(modalSaveHandler)modalSaveHandler();});
-function field(label,id,value='',type='text',required=true,extra=''){
- return `<div class="form-field"><label for="${id}">${label}</label><input class="field" id="${id}" type="${type}" value="${esc(value)}" ${required?'required':''} ${extra}></div>`;
-}
-function read(id){return $(id)?.value?.trim()||'';}
-function num(id){return Math.max(0,Number($(id)?.value)||0);}
-function transactionTotals(){
- const m=new Date().toISOString().slice(0,7);
- const tx=data.transactions.filter(t=>(t.date||'').startsWith(m));
- const inc=tx.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
- const exp=tx.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
- const allInc=data.transactions.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
- const allExp=data.transactions.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
- return {inc,exp,balance:allInc-allExp,rate:inc?Math.round((inc-exp)/inc*100):0};
-}
-function renderAll(){renderDashboard();renderTransactions();renderBudgets();renderGoals();renderLoans();renderBills();calculateEMI();}
+const blank=()=>({name:'',theme:'dark',transactions:[],budgets:[],goals:[],loans:[],investments:[],recurring:[],bills:[]});
+let d=blank(),saveHandler=null,timer;
+function persist(){localStorage.setItem('finovaDataV3',JSON.stringify(d))}
+function load(){try{const x=JSON.parse(localStorage.getItem('finovaDataV3')||'null');if(x)d={...blank(),...x}}catch(e){}}
+function notify(s){$('toast').textContent=s;$('toast').classList.add('show');clearTimeout(timer);timer=setTimeout(()=>$('toast').classList.remove('show'),2400)}
+function go(p){if(p==='more')p='settings';document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$('page-'+p)?.classList.add('active');document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===p));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
+function start(){ $('welcome').style.display='none';$('app').style.display='block';$('sideName').textContent=d.name;$('avatar').textContent=(d.name||'F')[0].toUpperCase();$('cardholder').textContent=d.name.toUpperCase();$('greeting').textContent='Your money, '+d.name.split(' ')[0]+'.';$('dateLabel').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();document.body.classList.toggle('light',d.theme==='light');renderAll()}
+$('welcomeForm').addEventListener('submit',e=>{e.preventDefault();const n=$('welcomeName').value.trim();if(!n)return;d.name=n;persist();start()});
+function toggleTheme(){d.theme=d.theme==='light'?'dark':'light';document.body.classList.toggle('light',d.theme==='light');persist();notify('Appearance updated')}
+function changeName(){const n=prompt('Your display name:',d.name);if(n?.trim()){d.name=n.trim().slice(0,40);persist();start()}}
+function modal(title,html,fn){$('modalTitle').textContent=title;$('modalBody').innerHTML=html;saveHandler=fn;$('backdrop').classList.add('show')}
+function closeModal(){$('backdrop').classList.remove('show');saveHandler=null}
+$('saveBtn').onclick=()=>saveHandler?.();
+function f(label,id,val='',type='text',required=true,extra=''){return `<div class="form-field"><label for="${id}">${label}</label><input class="field" id="${id}" type="${type}" value="${esc(val)}" ${required?'required':''} ${extra}></div>`}
+function v(id){return $(id)?.value?.trim()||''}function n(id){return Math.max(0,Number($(id)?.value)||0)}
+function sum(a,fn){return a.reduce((s,x)=>s+fn(x),0)}
+function totals(){let tx=d.transactions.filter(t=>t.date.startsWith(month())),inc=sum(tx.filter(x=>x.type==='income'),x=>x.amount),exp=sum(tx.filter(x=>x.type==='expense'),x=>x.amount);return{inc,exp,rate:inc?Math.round((inc-exp)/inc*100):0,allInc:sum(d.transactions.filter(x=>x.type==='income'),x=>x.amount),allExp:sum(d.transactions.filter(x=>x.type==='expense'),x=>x.amount)}}
+function emi(p,r,m){let i=r/1200;return i?p*i*Math.pow(1+i,m)/(Math.pow(1+i,m)-1):p/Math.max(1,m)}
+function renderAll(){renderDashboard();renderTx();renderBudgets();renderGoals();renderLoans();renderInvestments();renderRecurring();renderBills();renderReports();calcEMI()}
 function renderDashboard(){
- const t=transactionTotals();
- $('totalBalance').textContent=money(t.balance);$('heroBalance').textContent=money(t.balance);
- $('totalIncome').textContent=money(t.inc);$('totalExpense').textContent=money(t.exp);
- $('savingsRate').textContent=t.rate+'%';
- const b=data.budgets.slice(0,4);
- $('budgetPreview').innerHTML=b.length?b.map(x=>{
-  const spent=data.transactions.filter(t=>t.type==='expense'&&t.category.toLowerCase()===x.category.toLowerCase()&&(t.date||'').startsWith(new Date().toISOString().slice(0,7))).reduce((s,t)=>s+t.amount,0);
-  const pct=x.limit?Math.min(100,spent/x.limit*100):0;
-  return `<div class="budget-item"><div class="budget-row"><span>${esc(x.category)}</span><span>${money(spent)} / ${money(x.limit)}</span></div><div class="progress"><span style="width:${pct}%;${pct>=90?'background:var(--red)':''}"></span></div></div>`;
- }).join(''):'<div class="empty">No budgets yet.<br>Create one to start planning.</div>';
- const goal=data.goals[0];
- $('goalPreview').innerHTML=goal?`<div class="goal-card"><div class="goal-top"><div class="goal-icon">✦</div><span class="badge">${Math.min(100,Math.round(goal.saved/goal.target*100))}%</span></div><div class="goal-name">${esc(goal.name)}</div><div class="goal-amount">${money(goal.saved)} <span class="muted">of ${money(goal.target)}</span></div><div class="progress"><span style="width:${Math.min(100,goal.saved/goal.target*100)}%"></span></div><button class="link-btn" style="margin-top:13px;padding:0" onclick="contributeGoal('${goal.id}')">＋ Add savings</button></div>`:'<div class="empty">Your next milestone starts here.</div>';
- const recent=[...data.transactions].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
- $('recentRows').innerHTML=recent.length?recent.map(tx=>txRow(tx,false)).join(''):'<tr><td colspan="4"><div class="empty">No transactions yet. Add your first one above.</div></td></tr>';
- $('upcomingPreview').innerHTML=data.bills.filter(b=>!b.paid).sort((a,b)=>a.due.localeCompare(b.due)).slice(0,4).map(b=>`<div class="setting-row"><div class="item-name"><div class="item-icon">◷</div><div>${esc(b.name)}<div class="item-sub">Due ${esc(b.due||'Not set')}</div></div></div><div style="text-align:right"><b>${money(b.amount)}</b><div style="margin-top:5px"><button class="link-btn" onclick="markBill('${b.id}')">Mark paid</button></div></div></div>`).join('')||'<div class="empty">You’re all caught up. Add a bill to track upcoming payments.</div>';
+ let t=totals(),debt=sum(d.loans,l=>Math.max(0,l.principal-l.repaid)),invest=sum(d.investments,x=>x.value),assets=t.allInc-t.allExp+sum(d.investments,x=>x.value)+sum(d.goals,x=>x.saved);
+ $('netWorth').textContent=money(assets-debt);$('heroBalance').textContent=money(t.allInc-t.allExp);$('income').textContent=money(t.inc);$('expense').textContent=money(t.exp);$('rate').textContent=t.rate+'%';
+ let bs=d.budgets.slice(0,4);$('budgetPreview').innerHTML=bs.length?bs.map(b=>{let spent=sum(d.transactions.filter(x=>x.type==='expense'&&x.category.toLowerCase()===b.category.toLowerCase()&&x.date.startsWith(month())),x=>x.amount),pct=Math.min(100,spent/b.limit*100);return `<div class="budget-item"><div class="budget-row"><span>${esc(b.category)}</span><span>${money(spent)} / ${money(b.limit)}</span></div><div class="progress"><span style="width:${pct}%;${pct>90?'background:var(--red)':''}"></span></div></div>`}).join(''):'<div class="empty">Create a budget to track spending.</div>';
+ let g=d.goals[0];$('goalPreview').innerHTML=g?`<div class="goal-card"><span class="badge">${Math.min(100,Math.round(g.saved/g.target*100))}% complete</span><div class="goal-title">${esc(g.name)}</div><div class="goal-amount">${money(g.saved)} <span class="muted">of ${money(g.target)}</span></div><div class="progress"><span style="width:${Math.min(100,g.saved/g.target*100)}%"></span></div><button class="link" style="margin-top:12px" onclick="contribute('${g.id}')">＋ Add savings</button></div>`:'<div class="empty">Your next milestone starts here.</div>';
+ let recent=[...d.transactions].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);$('recent').innerHTML=recent.length?recent.map(x=>txrow(x,false)).join(''):'<tr><td colspan="4"><div class="empty">No transactions yet. Add your first entry.</div></td></tr>';
+ $('upcoming').innerHTML=[...d.bills.filter(x=>!x.paid).map(x=>({...x,kind:'bill'})),...d.recurring.filter(x=>!x.paid).map(x=>({...x,kind:'recurring'}))].sort((a,b)=>(a.due||'9999').localeCompare(b.due||'9999')).slice(0,5).map(x=>`<div class="setting-row"><div>${esc(x.name)}<div class="muted" style="margin-top:4px">${x.kind==='bill'?'Due':'Recurring'} · ${esc(x.due||x.frequency||'Not set')}</div></div><div style="text-align:right;font-weight:800">${money(x.amount)}<div><button class="link" onclick="${x.kind==='bill'?`markBill('${x.id}')`:`toggleRecurring('${x.id}')`}">Mark done</button></div></div></div>`).join('')||'<div class="empty">Nothing pending. Add a bill or recurring expense to track it.</div>';
+ $('insights').innerHTML=`• This month: <b>${money(t.inc-t.exp)}</b> net cash flow.<br>• Investments recorded: <b>${money(invest)}</b>.<br>• Outstanding loan principal: <b>${money(debt)}</b>.<br>• Savings goals: <b>${d.goals.length}</b>.<br><br>Figures depend on the records you enter.`;
  renderChart();
 }
-function renderChart(){
- const svg=$('cashChart'),months=[];
- for(let i=5;i>=0;i--){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);const key=d.toISOString().slice(0,7);months.push({key,label:d.toLocaleDateString('en-IN',{month:'short'})});}
- const vals=months.map(m=>({label:m.label,inc:data.transactions.filter(t=>t.type==='income'&&t.date.startsWith(m.key)).reduce((s,t)=>s+t.amount,0),exp:data.transactions.filter(t=>t.type==='expense'&&t.date.startsWith(m.key)).reduce((s,t)=>s+t.amount,0)}));
- const max=Math.max(1,...vals.flatMap(v=>[v.inc,v.exp]));
- let out='';
- for(let i=0;i<4;i++){const y=12+i*43;out+=`<line x1="10" y1="${y}" x2="590" y2="${y}" class="chart-grid"/>`;}
- vals.forEach((v,i)=>{const x=25+i*96;const h1=v.inc/max*125,h2=v.exp/max*125;out+=`<rect x="${x}" y="${140-h1}" width="24" height="${h1}" rx="5" fill="#baff70"><title>Income: ${money(v.inc)}</title></rect><rect x="${x+29}" y="${140-h2}" width="24" height="${h2}" rx="5" fill="#7391a0"><title>Expenses: ${money(v.exp)}</title></rect><text x="${x+26}" y="165" text-anchor="middle" class="chart-label">${v.label}</text>`;});
- svg.innerHTML=out;
-}
-function txRow(tx,actions=true){
- return `<tr><td><div class="item-name"><div class="item-icon">${tx.type==='income'?'↙':'↗'}</div><div>${esc(tx.name)}<div class="item-sub">${esc(tx.note||tx.type)}</div></div></div></td><td>${esc(tx.category)}</td><td>${esc(tx.date)}</td><td class="${tx.type==='income'?'positive':'negative'}" style="font-weight:800;white-space:nowrap">${tx.type==='income'?'+':'−'}${money(tx.amount)}</td>${actions?`<td><button class="link-btn" onclick="editTransaction('${tx.id}')">Edit</button> <button class="danger" onclick="deleteTransaction('${tx.id}')">Delete</button></td>`:''}</tr>`;
-}
-function renderTransactions(){
- const q=($('transactionSearch')?.value||'').toLowerCase(),filter=$('transactionFilter')?.value||'all';
- const list=[...data.transactions].filter(t=>(filter==='all'||t.type===filter)&&[t.name,t.category,t.note].join(' ').toLowerCase().includes(q)).sort((a,b)=>b.date.localeCompare(a.date));
- if($('transactionRows'))$('transactionRows').innerHTML=list.length?list.map(t=>txRow(t,true)).join(''):'<tr><td colspan="5"><div class="empty">No matching transactions found.</div></td></tr>';
-}
-function openTransaction(type='expense',id=null){
- const old=data.transactions.find(t=>t.id===id)||{};
- openModal(id?'Edit transaction':'Add transaction',`<div class="form-grid">
- <div class="form-field"><label>Type</label><select class="field" id="txType"><option value="expense" ${ (old.type||type)==='expense'?'selected':''}>Expense</option><option value="income" ${(old.type||type)==='income'?'selected':''}>Income</option></select></div>
- ${field('Amount (₹)','txAmount',old.amount||'','number',true,'min="0.01" step="0.01"')}
- ${field('Description','txName',old.name||'','text',true,'maxlength="80"')}
- <div class="form-field"><label>Category</label><select class="field" id="txCategory">${['Food','Shopping','Transport','Bills','Housing','Health','Education','Salary','Business','Investment','Entertainment','Other'].map(c=>`<option ${old.category===c?'selected':''}>${c}</option>`).join('')}</select></div>
- ${field('Date','txDate',old.date||today(),'date')}
- ${field('Note (optional)','txNote',old.note||'','text',false)}
- </div>`,()=>{
-  const amount=num('txAmount'),name=read('txName');if(!amount||!name){toast('Enter a description and amount');return;}
-  const tx={id:id||uid(),type:read('txType'),amount,name,category:read('txCategory'),date:read('txDate')||today(),note:read('txNote')};
-  if(id)data.transactions=data.transactions.map(t=>t.id===id?tx:t);else data.transactions.push(tx);
-  saveData();closeModal();renderAll();toast(id?'Transaction updated':'Transaction added');
- });
-}
-function editTransaction(id){openTransaction('expense',id)}
-function deleteTransaction(id){if(confirm('Delete this transaction?')){data.transactions=data.transactions.filter(t=>t.id!==id);saveData();renderAll();toast('Transaction deleted');}}
-function openBudget(id=null){
- const old=data.budgets.find(b=>b.id===id)||{};
- openModal(id?'Edit budget':'Create a budget',`<div class="form-grid">${field('Category','budgetCategory',old.category||'Food')}${field('Monthly limit (₹)','budgetLimit',old.limit||'','number',true,'min="1" step="1"')}</div>`,()=>{
- const category=read('budgetCategory'),limit=num('budgetLimit');if(!category||!limit){toast('Enter a category and limit');return;}
- const b={id:id||uid(),category,limit};if(id)data.budgets=data.budgets.map(x=>x.id===id?b:x);else data.budgets.push(b);
- saveData();closeModal();renderAll();toast('Budget saved');
- });
-}
-function renderBudgets(){
- $('budgetsList').innerHTML=data.budgets.length?data.budgets.map(b=>{
- const spent=data.transactions.filter(t=>t.type==='expense'&&t.category.toLowerCase()===b.category.toLowerCase()&&t.date.startsWith(new Date().toISOString().slice(0,7))).reduce((s,t)=>s+t.amount,0),pct=Math.min(100,spent/b.limit*100);
- return `<div class="goal-card"><div class="panel-head"><div><div class="goal-name" style="margin-top:0">${esc(b.category)}</div><div class="muted">${money(spent)} spent of ${money(b.limit)}</div></div><div><button class="link-btn" onclick="openBudget('${b.id}')">Edit</button> <button class="danger" onclick="removeItem('budgets','${b.id}')">Remove</button></div></div><div class="progress"><span style="width:${pct}%;${pct>=90?'background:var(--red)':''}"></span></div><div class="muted" style="margin-top:9px">${Math.max(0,100-Math.round(pct))}% of budget remaining</div></div>`;
- }).join(''):'<div class="empty"><div class="empty-icon">◷</div>No budgets yet. Create your first monthly spending limit.</div>';
-}
-function openGoal(id=null){
- const old=data.goals.find(g=>g.id===id)||{};
- openModal(id?'Edit savings goal':'Create savings goal',`<div class="form-grid">${field('Goal name','goalName',old.name||'')}${field('Target amount (₹)','goalTarget',old.target||'','number',true,'min="1"')}${field('Already saved (₹)','goalSaved',old.saved||0,'number',true,'min="0"')}</div>`,()=>{
- const name=read('goalName'),target=num('goalTarget'),saved=num('goalSaved');if(!name||!target){toast('Enter a name and target');return;}
- const g={id:id||uid(),name,target,saved};if(id)data.goals=data.goals.map(x=>x.id===id?g:x);else data.goals.push(g);
- saveData();closeModal();renderAll();toast('Savings goal saved');
- });
-}
-function contributeGoal(id){
- const g=data.goals.find(x=>x.id===id);if(!g)return;
- const a=Number(prompt(`Add contribution to ${g.name} (₹):`));if(!Number.isFinite(a)||a<=0)return;
- g.saved+=a;saveData();renderAll();toast('Savings contribution recorded');
-}
-function renderGoals(){
- $('goalsList').innerHTML=data.goals.length?data.goals.map(g=>{
- const pct=Math.min(100,g.saved/g.target*100);
- return `<div class="goal-card"><div class="goal-top"><div class="goal-icon">✦</div><span class="badge">${Math.round(pct)}% complete</span></div><div class="goal-name">${esc(g.name)}</div><div class="goal-amount">${money(g.saved)} <span class="muted">of ${money(g.target)}</span></div><div class="progress"><span style="width:${pct}%"></span></div><div class="panel-head" style="margin:15px 0 0"><span class="muted">${money(Math.max(0,g.target-g.saved))} left to reach your goal</span><div><button class="link-btn" onclick="contributeGoal('${g.id}')">＋ Add</button> <button class="link-btn" onclick="openGoal('${g.id}')">Edit</button> <button class="danger" onclick="removeItem('goals','${g.id}')">Delete</button></div></div></div>`;
- }).join(''):'<div class="empty"><div class="empty-icon">◎</div>Every big goal starts with a small plan.</div>';
-}
-function openLoan(id=null){
- const old=data.loans.find(l=>l.id===id)||{};
- openModal(id?'Edit loan':'Add a loan',`<div class="form-grid">${field('Loan name','loanName',old.name||'')}${field('Original amount (₹)','loanPrincipal',old.principal||'','number',true,'min="1"')}${field('Annual interest (%)','loanRate',old.rate??10,'number',true,'min="0" step=".1"')}${field('Tenure (months)','loanMonths',old.months||60,'number',true,'min="1"')}${field('Principal repaid (₹)','loanRepaid',old.repaid||0,'number',true,'min="0"')}</div>`,()=>{
- const name=read('loanName'),principal=num('loanPrincipal'),rate=num('loanRate'),months=Math.floor(num('loanMonths')),repaid=num('loanRepaid');
- if(!name||!principal||!months){toast('Enter the loan details');return;}
- const l={id:id||uid(),name,principal,rate,months,repaid:Math.min(principal,repaid)};
- if(id)data.loans=data.loans.map(x=>x.id===id?l:x);else data.loans.push(l);
- saveData();closeModal();renderAll();toast('Loan saved');
- });
-}
-function emi(p,r,m){const i=r/1200;return i? p*i*Math.pow(1+i,m)/(Math.pow(1+i,m)-1):p/m;}
-function renderLoans(){
- const outstanding=data.loans.reduce((s,l)=>s+Math.max(0,l.principal-l.repaid),0);
- const totalEMI=data.loans.reduce((s,l)=>s+emi(Math.max(0,l.principal-l.repaid),l.rate,l.months),0);
- $('loanOutstanding').textContent=money(outstanding);$('loanEmi').textContent=money(totalEMI);
- $('loansList').innerHTML=data.loans.length?data.loans.map(l=>{
- const left=Math.max(0,l.principal-l.repaid);
- return `<div class="goal-card"><div class="panel-head"><div class="item-name"><div class="item-icon">↗</div><div>${esc(l.name)}<div class="item-sub">${l.rate}% annual interest · ${l.months} months</div></div></div><div><button class="link-btn" onclick="openLoan('${l.id}')">Edit</button> <button class="danger" onclick="removeItem('loans','${l.id}')">Delete</button></div></div><div class="form-grid"><div><div class="muted">OUTSTANDING</div><div class="goal-amount">${money(left)}</div></div><div><div class="muted">ESTIMATED EMI</div><div class="goal-amount">${money(emi(left,l.rate,l.months))}</div></div></div><div class="progress"><span style="width:${Math.min(100,l.repaid/l.principal*100)}%"></span></div><button class="secondary" style="margin-top:14px" onclick="repayLoan('${l.id}')">＋ Record principal repayment</button></div>`;
- }).join(''):'<div class="empty">No loans recorded. Add a loan to estimate repayments.</div>';
-}
-function calculateEMI(){
- const p=num('calcPrincipal'),r=num('calcRate'),years=num('calcYears'),m=Math.round(years*12);
- if(!p||!m){$('calcResult').textContent='—';$('calcTotal').textContent='Enter loan details';return;}
- const monthly=emi(p,r,m);$('calcResult').textContent=money(monthly);$('calcTotal').textContent=`Total estimated repayment: ${money(monthly*m)} · Interest: ${money(monthly*m-p)}`;
-}
-function repayLoan(id){
- const l=data.loans.find(x=>x.id===id);if(!l)return;
- const amount=Number(prompt('How much principal did you repay? (₹)', ''));if(!Number.isFinite(amount)||amount<=0)return;
- l.repaid=Math.min(l.principal,l.repaid+amount);saveData();renderAll();toast('Repayment recorded');
-}
-function openBill(id=null){
- const old=data.bills.find(b=>b.id===id)||{};
- openModal(id?'Edit bill':'Add a bill',`<div class="form-grid">${field('Bill name','billName',old.name||'')}${field('Amount (₹)','billAmount',old.amount||'','number',true,'min="1"')}${field('Due date','billDue',old.due||today(),'date')}<div class="form-field"><label>Status</label><select id="billPaid" class="field"><option value="false" ${!old.paid?'selected':''}>Unpaid</option><option value="true" ${old.paid?'selected':''}>Paid</option></select></div></div>`,()=>{
- const name=read('billName'),amount=num('billAmount');if(!name||!amount){toast('Enter bill name and amount');return;}
- const b={id:id||uid(),name,amount,due:read('billDue')||today(),paid:read('billPaid')==='true'};
- if(id)data.bills=data.bills.map(x=>x.id===id?b:x);else data.bills.push(b);
- saveData();closeModal();renderAll();toast('Bill saved');
- });
-}
-function renderBills(){
- $('billsList').innerHTML=data.bills.length?data.bills.slice().sort((a,b)=>Number(a.paid)-Number(b.paid)||a.due.localeCompare(b.due)).map(b=>`<div class="setting-row"><div class="item-name"><div class="item-icon">${b.paid?'✓':'◷'}</div><div>${esc(b.name)}<div class="item-sub">Due ${esc(b.due)}</div></div></div><div style="text-align:right"><div style="font-weight:800;margin-bottom:6px">${money(b.amount)}</div><span class="badge ${b.paid?'':'yellow'}">${b.paid?'PAID':'UNPAID'}</span><div style="margin-top:8px"><button class="link-btn" onclick="openBill('${b.id}')">Edit</button> ${!b.paid?`<button class="link-btn" onclick="markBill('${b.id}')">Mark paid</button>`:''} <button class="danger" onclick="removeItem('bills','${b.id}')">Delete</button></div></div></div>`).join(''):'<div class="empty">No bills tracked yet.</div>';
-}
-function markBill(id){const b=data.bills.find(x=>x.id===id);if(!b)return;b.paid=!b.paid;saveData();renderAll();toast(b.paid?'Bill marked paid':'Bill marked unpaid');}
-function removeItem(key,id){if(confirm('Remove this item?')){data[key]=data[key].filter(x=>x.id!==id);saveData();renderAll();toast('Item removed');}}
-function askCoach(){
- const q=($('coachQuestion').value||'').toLowerCase();
- const t=transactionTotals();
- const expenses=data.transactions.filter(x=>x.type==='expense');
- const categories={};expenses.forEach(x=>categories[x.category]=(categories[x.category]||0)+x.amount);
- const biggest=Object.entries(categories).sort((a,b)=>b[1]-a[1])[0];
- let answer='';
- if(!data.transactions.length)answer='Welcome to your money check-in. Start by recording your income and expenses. Once you have a few transactions, FINOVA can summarize your spending patterns here.';
- else if(q.includes('debt')||q.includes('loan'))answer=`Your recorded outstanding loan principal is ${money(data.loans.reduce((s,l)=>s+Math.max(0,l.principal-l.repaid),0))}.\n\n1. Keep a small emergency buffer.\n2. Pay every required EMI on time.\n3. Compare the interest rate before making extra repayments.\n4. Avoid taking new high-cost debt to pay old debt.\n\nThis is general guidance, not personalized regulated financial advice.`;
- else if(q.includes('spend')||q.includes('category'))answer=biggest?`Your largest recorded expense category is ${biggest[0]} at ${money(biggest[1])} across all recorded transactions.\n\nReview the purchases in this category and identify one recurring expense you can reduce. Your records only reflect what you've entered into FINOVA.`:'There is not enough expense data yet. Record expenses with categories and I can summarize them.';
- else answer=`Here's your current snapshot:\n\n• This month's income: ${money(t.inc)}\n• This month's expenses: ${money(t.exp)}\n• Overall recorded balance: ${money(t.balance)}\n• Savings rate this month: ${t.rate}%\n\nA simple next step: set a realistic budget for your largest expense category, automate a regular savings contribution, and review your spending weekly.\n\nThese insights are generated locally from your entries.`;
- $('coachAnswer').textContent=answer;
-}
-function quickAsk(q){$('coachQuestion').value=q;askCoach();}
-function exportCSV(){
- const rows=[['Date','Type','Description','Category','Amount','Note'],...data.transactions.map(t=>[t.date,t.type,t.name,t.category,t.amount,t.note||''])];
- const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\r\n');
- downloadFile(csv,'finova-transactions.csv','text/csv;charset=utf-8');toast('CSV exported');
-}
-function backupData(){downloadFile(JSON.stringify(data,null,2),'finova-backup-'+today()+'.json','application/json');toast('Backup downloaded');}
-function downloadFile(content,name,type){
- const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');
- a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
-function restoreData(event){
- const file=event.target.files?.[0];if(!file)return;
- const reader=new FileReader();
- reader.onload=()=>{
- try{
-  const incoming=JSON.parse(reader.result);
-  if(!incoming||!Array.isArray(incoming.transactions)||!Array.isArray(incoming.budgets)||!Array.isArray(incoming.goals)||!Array.isArray(incoming.loans)||!Array.isArray(incoming.bills))throw Error('Invalid format');
-  if(!confirm('Replace your current FINOVA data with this backup?'))return;
-  data={...defaultData(),...incoming};saveData();startApp();toast('Backup restored');
- }catch(e){alert('This file is not a valid FINOVA backup. Your current data was not changed.');}
- finally{event.target.value='';}
- };
- reader.readAsText(file);
-}
-function clearData(){if(confirm('Permanently delete all FINOVA data saved in this browser? Download a backup first if needed.')){localStorage.removeItem('finovaPremiumData');data=defaultData();$('app').style.display='none';$('welcome').style.display='flex';$('welcomeName').value='';toast('Local data cleared');}}
-$('bankCard').addEventListener('mousemove',e=>{
- if(matchMedia('(prefers-reduced-motion: reduce)').matches||innerWidth<700)return;
- const r=e.currentTarget.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
- e.currentTarget.style.transform=`perspective(800px) rotateY(${x*7}deg) rotateX(${-y*7}deg)`;
-});
+function renderChart(){let svg=$('chart'),ms=[];for(let i=5;i>=0;i--){let x=new Date();x.setDate(1);x.setMonth(x.getMonth()-i);ms.push({key:x.toISOString().slice(0,7),label:x.toLocaleDateString('en-IN',{month:'short'})})}let a=ms.map(m=>({label:m.label,inc:sum(d.transactions.filter(x=>x.type==='income'&&x.date.startsWith(m.key)),x=>x.amount),exp:sum(d.transactions.filter(x=>x.type==='expense'&&x.date.startsWith(m.key)),x=>x.amount)})),max=Math.max(1,...a.flatMap(x=>[x.inc,x.exp])),s='';for(let i=0;i<4;i++)s+=`<line x1="10" y1="${12+i*43}" x2="590" y2="${12+i*43}" class="chart-grid"/>`;a.forEach((x,i)=>{let px=25+i*96,h=x.inc/max*125,e=x.exp/max*125;s+=`<rect x="${px}" y="${140-h}" width="24" height="${h}" rx="5" fill="#baff70"><title>Income ${money(x.inc)}</title></rect><rect x="${px+29}" y="${140-e}" width="24" height="${e}" rx="5" fill="#7391a0"><title>Expenses ${money(x.exp)}</title></rect><text x="${px+26}" y="165" text-anchor="middle" class="chart-label">${x.label}</text>`});svg.innerHTML=s}
+function txrow(x,actions=true){return `<tr><td><div class="item-name"><div class="item-icon">${x.type==='income'?'↙':'↗'}</div><div>${esc(x.name)}<div class="item-sub">${esc(x.note||x.type)}</div></div></div></td><td>${esc(x.category)}</td><td>${esc(x.date)}</td><td class="${x.type==='income'?'positive':'negative'}" style="white-space:nowrap;font-weight:800">${x.type==='income'?'+':'−'}${money(x.amount)}</td>${actions?`<td><button class="link" onclick="openTx('${x.type}','${x.id}')">Edit</button> <button class="danger" onclick="remove('transactions','${x.id}')">Delete</button></td>`:''}</tr>`}
+function renderTx(){let q=($('searchTx')?.value||'').toLowerCase(),type=$('filterTx')?.value||'all',m=$('monthTx')?.value||'';let a=[...d.transactions].filter(x=>(type==='all'||x.type===type)&&(!m||x.date.startsWith(m))&&[x.name,x.category,x.note].join(' ').toLowerCase().includes(q)).sort((a,b)=>b.date.localeCompare(a.date));$('txRows').innerHTML=a.length?a.map(x=>txrow(x)).join(''):'<tr><td colspan="5"><div class="empty">No matching transactions.</div></td></tr>'}
+function openTx(type='expense',id=null){let old=d.transactions.find(x=>x.id===id)||{};modal(id?'Edit transaction':'Add transaction',`<div class="form-grid"><div class="form-field"><label>Type</label><select id="tType" class="field"><option value="expense" ${(old.type||type)==='expense'?'selected':''}>Expense</option><option value="income" ${(old.type||type)==='income'?'selected':''}>Income</option></select></div>${f('Amount (₹)','tAmount',old.amount||'','number',true,'min=".01" step=".01"')}${f('Description','tName',old.name||'') }<div class="form-field"><label>Category</label><select id="tCat" class="field">${['Food','Shopping','Transport','Bills','Housing','Health','Education','Salary','Business','Investment','Entertainment','Other'].map(c=>`<option ${old.category===c?'selected':''}>${c}</option>`).join('')}</select></div>${f('Date','tDate',old.date||today(),'date')}${f('Note (optional)','tNote',old.note||'','text',false)}</div>`,()=>{let amount=n('tAmount'),name=v('tName');if(!amount||!name){notify('Enter a description and amount');return}let x={id:id||uid(),type:v('tType'),amount,name,category:v('tCat'),date:v('tDate')||today(),note:v('tNote')};if(id)d.transactions=d.transactions.map(y=>y.id===id?x:y);else d.transactions.push(x);persist();closeModal();renderAll();notify('Transaction saved')})}
+function openBudget(id=null){let o=d.budgets.find(x=>x.id===id)||{};modal(id?'Edit budget':'New budget',`<div class="form-grid">${f('Category','bCat',o.category||'Food')}${f('Monthly limit (₹)','bLimit',o.limit||'','number',true,'min="1"')}</div>`,()=>{let category=v('bCat'),limit=n('bLimit');if(!category||!limit){notify('Enter category and limit');return}let x={id:id||uid(),category,limit};if(id)d.budgets=d.budgets.map(y=>y.id===id?x:y);else d.budgets.push(x);persist();closeModal();renderAll();notify('Budget saved')})}
+function renderBudgets(){$('budgetList').innerHTML=d.budgets.length?d.budgets.map(b=>{let spent=sum(d.transactions.filter(x=>x.type==='expense'&&x.category.toLowerCase()===b.category.toLowerCase()&&x.date.startsWith(month())),x=>x.amount),pct=Math.min(100,spent/b.limit*100);return `<div class="goal-card"><div class="panel-head"><div><div class="goal-title" style="margin:0 0 5px">${esc(b.category)}</div><div class="muted">${money(spent)} spent / ${money(b.limit)}</div></div><div><button class="link" onclick="openBudget('${b.id}')">Edit</button> <button class="danger" onclick="remove('budgets','${b.id}')">Delete</button></div></div><div class="progress"><span style="width:${pct}%;${pct>=90?'background:var(--red)':''}"></span></div><div class="muted" style="margin-top:8px">${pct>=100?'Budget exceeded':money(b.limit-spent)+' remaining'}</div></div>`}).join(''):'<div class="empty">No budgets yet. Create your first budget.</div>'}
+function openGoal(id=null){let o=d.goals.find(x=>x.id===id)||{};modal(id?'Edit goal':'New savings goal',`<div class="form-grid">${f('Goal name','gName',o.name||'')}${f('Target amount (₹)','gTarget',o.target||'','number',true,'min="1"')}${f('Amount already saved (₹)','gSaved',o.saved||0,'number',true,'min="0"')}</div>`,()=>{let name=v('gName'),target=n('gTarget'),saved=n('gSaved');if(!name||!target){notify('Enter name and target');return}let x={id:id||uid(),name,target,saved};if(id)d.goals=d.goals.map(y=>y.id===id?x:y);else d.goals.push(x);persist();closeModal();renderAll();notify('Goal saved')})}
+function contribute(id){let x=d.goals.find(y=>y.id===id),a=Number(prompt('How much are you adding to this goal? (₹)'));if(!x||!Number.isFinite(a)||a<=0)return;x.saved+=a;persist();renderAll();notify('Contribution recorded')}
+function renderGoals(){$('goalList').innerHTML=d.goals.length?d.goals.map(g=>`<div class="goal-card"><div class="panel-head"><div><span class="badge">${Math.min(100,Math.round(g.saved/g.target*100))}% complete</span><div class="goal-title">${esc(g.name)}</div></div><div><button class="link" onclick="openGoal('${g.id}')">Edit</button> <button class="danger" onclick="remove('goals','${g.id}')">Delete</button></div></div><div class="goal-amount">${money(g.saved)} <span class="muted">of ${money(g.target)}</span></div><div class="progress"><span style="width:${Math.min(100,g.saved/g.target*100)}%"></span></div><div class="panel-head" style="margin:12px 0 0"><span class="muted">${money(Math.max(0,g.target-g.saved))} to go</span><button class="secondary" onclick="contribute('${g.id}')">＋ Add savings</button></div></div>`).join(''):'<div class="empty">Set a savings goal and track your progress.</div>'}
+function openLoan(id=null){let o=d.loans.find(x=>x.id===id)||{};modal(id?'Edit loan':'Add loan',`<div class="form-grid">${f('Loan name','lName',o.name||'')}${f('Original principal (₹)','lPrincipal',o.principal||'','number',true,'min="1"')}${f('Annual interest (%)','lRate',o.rate??10,'number',true,'min="0" step=".1"')}${f('Tenure (months)','lMonths',o.months||60,'number',true,'min="1"')}${f('Principal repaid (₹)','lRepaid',o.repaid||0,'number',true,'min="0"')}</div>`,()=>{let name=v('lName'),principal=n('lPrincipal'),rate=n('lRate'),months=Math.floor(n('lMonths')),repaid=n('lRepaid');if(!name||!principal||!months){notify('Complete loan details');return}let x={id:id||uid(),name,principal,rate,months,repaid:Math.min(principal,repaid)};if(id)d.loans=d.loans.map(y=>y.id===id?x:y);else d.loans.push(x);persist();closeModal();renderAll();notify('Loan saved')})}
+function renderLoans(){let debt=sum(d.loans,x=>Math.max(0,x.principal-x.repaid)),payments=sum(d.loans,x=>emi(Math.max(0,x.principal-x.repaid),x.rate,x.months));$('debtTotal').textContent=money(debt);$('emiTotal').textContent=money(payments);$('loanList').innerHTML=d.loans.length?d.loans.map(l=>{let left=Math.max(0,l.principal-l.repaid);return `<div class="goal-card"><div class="panel-head"><div><b>${esc(l.name)}</b><div class="muted" style="margin-top:5px">${l.rate}% interest · ${l.months} months</div></div><div><button class="link" onclick="openLoan('${l.id}')">Edit</button> <button class="danger" onclick="remove('loans','${l.id}')">Delete</button></div></div><div class="form-grid"><div><div class="muted">OUTSTANDING</div><div class="goal-amount">${money(left)}</div></div><div><div class="muted">ESTIMATED EMI</div><div class="goal-amount">${money(emi(left,l.rate,l.months))}</div></div></div><div class="progress"><span style="width:${Math.min(100,l.repaid/l.principal*100)}%"></span></div><button class="secondary" style="margin-top:12px" onclick="repay('${l.id}')">＋ Record principal repayment</button></div>`}).join(''):'<div class="empty">No loans recorded yet.</div>'}
+function repay(id){let x=d.loans.find(y=>y.id===id),a=Number(prompt('Principal repaid (₹):'));if(!x||!Number.isFinite(a)||a<=0)return;x.repaid=Math.min(x.principal,x.repaid+a);persist();renderAll();notify('Repayment recorded')}
+function calcEMI(){if(!$('cp'))return;let p=n('cp'),r=n('cr'),m=Math.round(n('cy')*12);if(!p||!m){$('calcResult').textContent='—';$('calcDetail').textContent='Enter loan details';return}let e=emi(p,r,m);$('calcResult').textContent=money(e);$('calcDetail').textContent=`Total repayment ${money(e*m)} · Estimated interest ${money(e*m-p)}`}
+function openInvestment(id=null){let o=d.investments.find(x=>x.id===id)||{};modal(id?'Edit investment':'Add investment',`<div class="form-grid">${f('Investment name','iName',o.name||'') }<div class="form-field"><label>Asset type</label><select id="iType" class="field">${['Mutual fund','Stocks','ETF','Fixed deposit','Gold','Bonds','Crypto','Other'].map(t=>`<option ${o.type===t?'selected':''}>${t}</option>`).join('')}</select></div>${f('Amount invested (₹)','iCost',o.cost||'','number',true,'min="0.01"')}${f('Current value (₹)','iValue',o.value??'','number',true,'min="0"')}${f('Units / quantity (optional)','iUnits',o.units||'','number',false,'min="0" step="any"')}</div>`,()=>{let name=v('iName'),cost=n('iCost'),value=n('iValue');if(!name||!cost){notify('Enter investment and cost');return}let x={id:id||uid(),name,type:v('iType'),cost,value,units:v('iUnits')};if(id)d.investments=d.investments.map(y=>y.id===id?x:y);else d.investments.push(x);persist();closeModal();renderAll();notify('Investment saved')})}
+function renderInvestments(){let cost=sum(d.investments,x=>x.cost),value=sum(d.investments,x=>x.value),profit=value-cost;$('portfolioValue').textContent=money(value);$('investedValue').textContent=money(cost);$('profitValue').textContent=money(profit);$('profitValue').className='stat-value '+(profit>=0?'positive':'negative');$('investmentList').innerHTML=d.investments.length?`<div class="table-wrap"><table><thead><tr><th>Investment</th><th>Cost</th><th>Current value</th><th>Profit/loss</th><th>Actions</th></tr></thead><tbody>${d.investments.map(x=>`<tr><td><div class="item-name"><div class="item-icon">▥</div><div>${esc(x.name)}<div class="item-sub">${esc(x.type)}</div></div></div></td><td>${money(x.cost)}</td><td>${money(x.value)}</td><td class="${x.value>=x.cost?'positive':'negative'}">${money(x.value-x.cost)}</td><td><button class="link" onclick="openInvestment('${x.id}')">Edit</button> <button class="danger" onclick="remove('investments','${x.id}')">Delete</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Add an investment to track its value and your unrealized profit/loss.</div>'}
+function openRecurring(id=null){let o=d.recurring.find(x=>x.id===id)||{};modal(id?'Edit recurring expense':'Add recurring expense',`<div class="form-grid">${f('Name','rName',o.name||'')}${f('Amount per payment (₹)','rAmount',o.amount||'','number',true,'min="1"')}<div class="form-field"><label>Frequency</label><select id="rFreq" class="field">${['Weekly','Monthly','Quarterly','Yearly'].map(x=>`<option ${o.frequency===x?'selected':''}>${x}</option>`).join('')}</select></div>${f('Next due date','rDue',o.due||today(),'date')}<div class="form-field full"><label>Status</label><select id="rPaid" class="field"><option value="false" ${!o.paid?'selected':''}>Pending</option><option value="true" ${o.paid?'selected':''}>Paid this cycle</option></select></div></div>`,()=>{let name=v('rName'),amount=n('rAmount');if(!name||!amount){notify('Enter name and amount');return}let x={id:id||uid(),name,amount,frequency:v('rFreq'),due:v('rDue')||today(),paid:v('rPaid')==='true'};if(id)d.recurring=d.recurring.map(y=>y.id===id?x:y);else d.recurring.push(x);persist();closeModal();renderAll();notify('Recurring expense saved')})}
+function renderRecurring(){let monthly=sum(d.recurring,x=>x.amount*({'Weekly':52/12,'Monthly':1,'Quarterly':1/3,'Yearly':1/12}[x.frequency]||1));$('recurringTotal').textContent=money(monthly);$('recurringList').innerHTML=d.recurring.length?d.recurring.map(x=>`<div class="setting-row"><div><b>${esc(x.name)}</b><div class="muted" style="margin-top:5px">${esc(x.frequency)} · Next due ${esc(x.due)}</div><span class="badge ${x.paid?'':'yellow'}">${x.paid?'DONE THIS CYCLE':'PENDING'}</span></div><div style="text-align:right"><b>${money(x.amount)}</b><div style="margin-top:8px"><button class="link" onclick="openRecurring('${x.id}')">Edit</button> <button class="link" onclick="toggleRecurring('${x.id}')">${x.paid?'Undo':'Mark done'}</button> <button class="danger" onclick="remove('recurring','${x.id}')">Delete</button></div></div></div>`).join(''):'<div class="empty">Track subscriptions, rent, insurance, SIPs, and other regular expenses.</div>'}
+function toggleRecurring(id){let x=d.recurring.find(y=>y.id===id);if(x){x.paid=!x.paid;persist();renderAll();notify('Recurring item updated')}}
+function openBill(id=null){let o=d.bills.find(x=>x.id===id)||{};modal(id?'Edit bill':'Add bill',`<div class="form-grid">${f('Bill name','billName',o.name||'')}${f('Amount (₹)','billAmount',o.amount||'','number',true,'min="1"')}${f('Due date','billDue',o.due||today(),'date')}<div class="form-field"><label>Status</label><select id="billPaid" class="field"><option value="false" ${!o.paid?'selected':''}>Unpaid</option><option value="true" ${o.paid?'selected':''}>Paid</option></select></div></div>`,()=>{let name=v('billName'),amount=n('billAmount');if(!name||!amount){notify('Enter bill name and amount');return}let x={id:id||uid(),name,amount,due:v('billDue')||today(),paid:v('billPaid')==='true'};if(id)d.bills=d.bills.map(y=>y.id===id?x:y);else d.bills.push(x);persist();closeModal();renderAll();notify('Bill saved')})}
+function renderBills(){$('billList').innerHTML=d.bills.length?[...d.bills].sort((a,b)=>Number(a.paid)-Number(b.paid)||a.due.localeCompare(b.due)).map(x=>`<div class="setting-row"><div><b>${esc(x.name)}</b><div class="muted" style="margin:5px 0">Due ${esc(x.due)}</div><span class="badge ${x.paid?'':'yellow'}">${x.paid?'PAID':'UNPAID'}</span></div><div style="text-align:right"><b>${money(x.amount)}</b><div style="margin-top:8px"><button class="link" onclick="openBill('${x.id}')">Edit</button> <button class="link" onclick="markBill('${x.id}')">${x.paid?'Undo':'Mark paid'}</button> <button class="danger" onclick="remove('bills','${x.id}')">Delete</button></div></div></div>`).join(''):'<div class="empty">No bills yet. Add due dates to stay organized.</div>'}
+function markBill(id){let x=d.bills.find(y=>y.id===id);if(x){x.paid=!x.paid;persist();renderAll();notify(x.paid?'Bill marked paid':'Bill marked unpaid')}}
+function renderReports(){let t=totals();$('allIncome').textContent=money(t.allInc);$('allExpense').textContent=money(t.allExp);$('allFlow').textContent=money(t.allInc-t.allExp);$('txCount').textContent=d.transactions.length;let c={};d.transactions.filter(x=>x.type==='expense').forEach(x=>c[x.category]=(c[x.category]||0)+x.amount);let a=Object.entries(c).sort((x,y)=>y[1]-x[1]),max=Math.max(1,...a.map(x=>x[1]));$('categoryReport').innerHTML=a.length?a.map(([name,amount])=>`<div class="budget-item"><div class="budget-row"><span>${esc(name)}</span><b>${money(amount)}</b></div><div class="progress"><span style="width:${amount/max*100}%"></span></div></div>`).join(''):'<div class="empty">Record expenses to build a spending report.</div>'}
+function remove(key,id){if(!confirm('Delete this record?'))return;d[key]=d[key].filter(x=>x.id!==id);persist();renderAll();notify('Record deleted')}
+function backup(){download(JSON.stringify(d,null,2),'finova-backup-'+today()+'.json','application/json');notify('Backup downloaded')}
+function exportCSV(){let rows=[['Date','Type','Description','Category','Amount','Note'],...d.transactions.map(x=>[x.date,x.type,x.name,x.category,x.amount,x.note||''])];download(rows.map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\r\n'),'finova-transactions.csv','text/csv;charset=utf-8');notify('CSV exported')}
+function download(text,name,type){let url=URL.createObjectURL(new Blob([text],{type})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function restore(e){let file=e.target.files?.[0];if(!file)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x||!Array.isArray(x.transactions)||!Array.isArray(x.budgets)||!Array.isArray(x.goals)||!Array.isArray(x.loans)||!Array.isArray(x.investments)||!Array.isArray(x.recurring)||!Array.isArray(x.bills))throw Error();if(!confirm('Replace current data with this backup?'))return;d={...blank(),...x};persist();start();notify('Backup restored')}catch(err){alert('Invalid FINOVA backup. Current data was not changed.')}finally{e.target.value=''}};r.readAsText(file)}
+function clearAll(){if(!confirm('Permanently delete all FINOVA records from this browser? Download a backup first if needed.'))return;localStorage.removeItem('finovaDataV3');d=blank();$('app').style.display='none';$('welcome').style.display='flex';$('welcomeName').value='';notify('Local data cleared')}
+$('bankCard').addEventListener('mousemove',e=>{if(innerWidth<700||matchMedia('(prefers-reduced-motion: reduce)').matches)return;let r=e.currentTarget.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;e.currentTarget.style.transform=`perspective(800px) rotateY(${x*7}deg) rotateX(${-y*7}deg)`});
 $('bankCard').addEventListener('mouseleave',e=>e.currentTarget.style.transform='');
-loadData();
-if(data.name){startApp();}else{$('welcome').style.display='flex';}
+load();if(d.name)start();
 </script>
 </body>
 </html>
